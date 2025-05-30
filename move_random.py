@@ -35,12 +35,12 @@ def main():
     )
     parser.add_argument(
         "--source", type=Path,
-        default=Path("/home/crclayton/Music/picard"),
-        help="Root folder of Picard library"
+        default=Path("/home/crclayton/Music/library"),
+        help="Root folder of library library"
     )
     parser.add_argument(
         "--dest", type=Path,
-        default=Path("/home/crclayton/Music/picard/Random_Albums"),
+        default=Path("/home/crclayton/Music/library/Random_Albums"),
         help="Destination for recently added albums"
     )
     parser.add_argument(

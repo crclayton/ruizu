@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ALBUM_DIR="/home/crclayton/Music/picard/Random_Albums"
-SONG_DIR="/home/crclayton/Music/picard/Random_Songs"
+ALBUM_DIR="/home/crclayton/Music/library/Random_Albums"
+SONG_DIR="/home/crclayton/Music/library/Random_Songs"
 
 NUM_SONGS=100
 NUM_ALBUMS=20
@@ -12,7 +12,7 @@ mkdir -p "$SONG_DIR"
 rm $SONG_DIR/* -rf
 
 # Find all mp3 files and store them in an array
-mp3_files=($(find picard/ -type f -iname "*.mp3"))
+mp3_files=($(find library/ -type f -iname "*.mp3"))
 
 # Get the total number of mp3 files
 total_files=${#mp3_files[@]}
@@ -39,6 +39,6 @@ echo "Successfully copied $NUM_SONGS random mp3 files to $SONG_DIR"
 # mkdir -p "$ALBUM_DIR"
 #
 # # Find all mp3 files and store them in an array
-# find picard/ -type d -iname "[0-9][0-9][0-9][0-9]-*" | shuf | head -n $NUM_ALBUMS | xargs cp -r -t $ALBUM_DIR
+# find library/ -type d -iname "[0-9][0-9][0-9][0-9]-*" | shuf | head -n $NUM_ALBUMS | xargs cp -r -t $ALBUM_DIR
 #
 # find $ALBUM_DIR -type d

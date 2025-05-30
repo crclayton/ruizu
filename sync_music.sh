@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE_DIR=~/Music/picard
+SOURCE_DIR=~/Music/library
 TARGET_DIR=/media/crclayton/MP3
 
 

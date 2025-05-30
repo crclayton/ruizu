@@ -143,7 +143,7 @@ def extract_mp3_filenames_iso88591(filepath):
             possible_misses_suffix = list(sorted(set(possible_misses_suffix) - set(matches)))
 
             for m in matches:
-                if find_file("/home/crclayton/Music/picard", m) is None:
+                if find_file("/home/crclayton/Music/library", m) is None:
                     possible_misses_suffix.append(m)
 
             print("SONGS:", matches, len(matches))
@@ -154,16 +154,16 @@ def extract_mp3_filenames_iso88591(filepath):
             print("POSSIBLE MISSES:", possible_misses_suffix)
 
             for file in possible_misses_suffix:
-                match = find_file_starting_with("/home/crclayton/Music/picard", file.replace("MP3",""))
+                match = find_file_starting_with("/home/crclayton/Music/library", file.replace("MP3",""))
                 if match is None:
                     print("-> Couldn't find starting with, trying ending with:", file, "->", file[1:])
-                    match = find_file_ending_with("/home/crclayton/Music/picard", file[1:])
+                    match = find_file_ending_with("/home/crclayton/Music/library", file[1:])
                     if match is None:
                         print(" -> Couldn't find starting with, trying ending with:", file, "->", file[2:])
-                        match = find_file_ending_with("/home/crclayton/Music/picard", file[2:])
+                        match = find_file_ending_with("/home/crclayton/Music/library", file[2:])
                         if match is None:
                             print("  -> Couldn't find starting with, trying ending with:", file, "->", file[3:])
-                            match = find_file_ending_with("/home/crclayton/Music/picard", file[3:])
+                            match = find_file_ending_with("/home/crclayton/Music/library", file[3:])
                             if match is None:
                                 print("STILL MISSING:", file) 
                                 f = open("misses.txt", "a")
@@ -228,14 +228,14 @@ def copy_files_by_name(src_dir, dest_dir, filenames):
     print("File search and copy completed.")
 
 files = {
-        "/media/crclayton/MP3/USERPL1.PL":  "/home/crclayton/Music/picard/Playlists/soft",
-        "/media/crclayton/MP3/USERPL2.PL":  "/home/crclayton/Music/picard/Playlists/medium",
-        "/media/crclayton/MP3/USERPL3.PL":  "/home/crclayton/Music/picard/Playlists/hard",
+        "/media/crclayton/MP3/USERPL1.PL":  "/home/crclayton/Music/library/Playlists/soft",
+        "/media/crclayton/MP3/USERPL2.PL":  "/home/crclayton/Music/library/Playlists/medium",
+        "/media/crclayton/MP3/USERPL3.PL":  "/home/crclayton/Music/library/Playlists/hard",
     }
 
 for playlist_file, playlist_dir in files.items():
     mp3_list = extract_mp3_filenames_iso88591(playlist_file)
     print("MP3 list", mp3_list)
-    copy_files_by_name("picard", playlist_dir, mp3_list)
+    copy_files_by_name("library", playlist_dir, mp3_list)
     print("")
 
