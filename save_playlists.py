@@ -1,241 +1,117 @@
 import re
-
-
-from pathlib import Path
-
 import os
+import shutil
+import difflib
 
+def normalize(name):
+    """
+    Lowercase, strip extension, and remove anything but letters+digits
+    so “04-Afterthought.mp3” → “afterthought”.
+    """
+    base = os.path.splitext(name)[0].lower()
+    return re.sub(r'[^0-9a-z]', '', base)
 
-def find_file(root_dir, fname):
-    matches = []
+def build_library_index(root_dir):
+    """
+    Walk the library and return:
+      - norm_map: { normalized_basename: full_path OR [full_path,…] }
+      - all_norms: list of all normalized basenames
+    """
+    norm_map = {}
+    for dirpath, _, filenames in os.walk(root_dir):
+        for fn in filenames:
+            if fn.lower().endswith('.mp3'):
+                path = os.path.join(dirpath, fn)
+                norm = normalize(fn)
+                if norm in norm_map:
+                    # turn into list on first duplicate
+                    if isinstance(norm_map[norm], list):
+                        norm_map[norm].append(path)
+                    else:
+                        norm_map[norm] = [norm_map[norm], path]
+                else:
+                    norm_map[norm] = path
+    return norm_map, list(norm_map.keys())
 
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-        for filename in filenames:
-            #print(filename)
-            if filename == fname:
-                full_path = os.path.join(dirpath, filename)
-                matches.append(full_path)
+def find_best_match(norm_map, all_norms, query):
+    """
+    Try to match ‘query’ (raw extracted) to a file in the library:
+      1) exact normalized match
+      2) substring match
+      3) difflib.get_close_matches
+    Returns the chosen full path or None.
+    """
+    nq = normalize(query)
+    # 1) exact
+    if nq in norm_map:
+        val = norm_map[nq]
+        return val[0] if isinstance(val, list) else val
 
-    if len(matches) == 1:
-        #print("Match:", matches[0])
-        return matches[0]
-    elif len(matches) == 0:
-        #print("No matching files found.")
-        pass
-    else:
-        #print("Multiple matching files found:")
-        for match in matches:
-            #print("Match 1:", match)
-            return match
+    # 2) substring
+    subs = [n for n in all_norms if nq in n]
+    if len(subs) == 1:
+        val = norm_map[subs[0]]
+        return val[0] if isinstance(val, list) else val
 
+    # 3) fuzzy
+    close = difflib.get_close_matches(nq, all_norms, n=1, cutoff=0.6)
+    if close:
+        val = norm_map[close[0]]
+        return val[0] if isinstance(val, list) else val
+
+    # no luck
     return None
-
-
-
-def find_file_ending_with(root_dir, suffix):
-    matches = []
-
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-        for filename in filenames:
-            #print(filename)
-            if filename.endswith(suffix):
-                full_path = os.path.join(dirpath, filename)
-                matches.append(full_path)
-
-    if len(matches) == 1:
-        #print("Match:", matches[0])
-        return matches[0]
-    elif len(matches) == 0:
-        #print("No matching files found.")
-        pass
-    else:
-        #print("Multiple matching files found:")
-        for match in matches:
-            #print("Match 1:", match)
-            return match
-
-    return None
-
-def find_file_starting_with(root_dir, prefix):
-    matches = []
-
-    for dirpath, dirnames, filenames in os.walk(root_dir):
-        for filename in filenames:
-            #print(filename)
-            if filename.startswith(prefix):
-                full_path = os.path.join(dirpath, filename)
-                matches.append(full_path)
-
-    if len(matches) == 1:
-        #print("Match:", matches[0])
-        return matches[0]
-    elif len(matches) == 0:
-        #print("No matching files found.")
-        pass
-    else:
-        #print("Multiple matching files found:")
-        for match in matches:
-            #print("Match 1:", match)
-            return match
-
-    return None
-
 
 def extract_mp3_filenames_iso88591(filepath):
     """
-    Extracts MP3 filenames from an ISO-8859-1 encoded file.
-
-    Args:
-        filepath: The path to the ISO-8859-1 encoded file.
-
-    Returns:
-        A list of MP3 filenames, or an empty list if none are found.
+    (As before) read raw bytes, decode ISO-8859-1, strip nonprintable,
+    then find things ending in ‘.mp3’ via regex.
     """
-    try:
-        with open(filepath, 'rb') as f: #, encoding='ISO-8859-1') as f:
-            text_data = f.read()
+    with open(filepath, 'rb') as f:
+        data = f.read().decode('ISO-8859-1', errors='ignore')
+    # keep only ASCII-printable
+    clean = ''.join(c for c in data if c.isprintable() and ord(c) < 128)
+    # ensure we separate filenames
+    clean = re.sub(r'\.(?i:mp3)', '.mp3 ', clean)
+    pattern = re.compile(r'\d[\w\-\_]+\.mp3', re.IGNORECASE)
+    return sorted({m.group(0) for m in pattern.finditer(clean)})
 
+def copy_with_fuzzy(src_root, dest_dir, raw_names, lib_dir):
+    """
+    Build the library index once, then for each raw_name:
+      – find_best_match → actual_path
+      – copy actual_path → dest_dir
+      – log misses
+    """
+    norm_map, all_norms = build_library_index(lib_dir)
+    os.makedirs(dest_dir, exist_ok=True)
 
+    for raw in raw_names:
+        match = find_best_match(norm_map, all_norms, raw)
+        if match:
+            dst = os.path.join(dest_dir, os.path.basename(match))
+            if not os.path.exists(dst):
+                shutil.copy(match, dst)
+                print(f"✓ {raw} → {os.path.basename(match)}")
+            else:
+                print(f"⚠ {raw}: already exists, skipped")
+        else:
+            print(f"✗ {raw}: NO MATCH")
 
-            clean_text = str(text_data.decode("ISO-8859-1"))
-            #print("RAW TEXT:",clean_text)
-
-            #print(clean_text)
-
-
-
-            clean_text = ''.join([c for c in clean_text if c.isprintable()])  # Remove non-printable chars
-            clean_text = ''.join([c for c in clean_text if ord(c) < 128])
-
-            clean_text = clean_text.replace(".mp3",".mp3 ")
-            clean_text = clean_text.replace(".MP3",".MP3 ")
-            clean_text = clean_text.replace("mp3","mp3 ")
-            clean_text = clean_text.replace("MP3","MP3 ")
-            clean_text = clean_text.replace("mp3MP3","mp3 ")
-            clean_text = clean_text.replace("mpMP3","mp3 ")
-            #print("CLEANED TEXT:",clean_text)
-
-            #pattern = r'\d[A-Za-z0-9\-\_\.al]+\.mp3(?=\s|$|(?=\d[A-Za-z0-9\-\_\.]+\.mp3))'
-            #pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3(?!\S)'
-            #pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3(?=\s|$)'
-            #pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3(?=\b)'
-            pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3'
-            #pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3(?!\w)'
-            #pattern = r'\b\d[A-Za-z0-9\-\_\.]+\.mp3' # begins with a number and is an mp3 file
-
-            # Regular expression to find MP3 filenames (basic pattern for filenames)
-            mp3_pattern = re.compile(pattern, re.IGNORECASE)
-
-            # Find all matches
-            matches = list(sorted([m.strip() for m in mp3_pattern.findall(clean_text)]))
-
-
-
-            pattern = r'\d[A-Za-z0-9\-\_\.]+mp3'
-            #pattern = r'\d[A-Za-z0-9\-\_\.]+\.mp3(?!\w)'
-            #pattern = r'\b\d[A-Za-z0-9\-\_\.]+\.mp3' # begins with a number and is an mp3 file
-
-            # Regular expression to find MP3 filenames (basic pattern for filenames)
-            mp3_pattern = re.compile(pattern, re.IGNORECASE)
-
-            # Find all matches
-            possible_misses_suffix = [m.strip() for m in mp3_pattern.findall(clean_text)]
-            possible_misses_suffix = list(sorted(set(possible_misses_suffix) - set(matches)))
-
-            for m in matches:
-                if find_file("/home/crclayton/Music/library", m) is None:
-                    possible_misses_suffix.append(m)
-
-            print("SONGS:", matches, len(matches))
-
-            for f in ["1.UMP3", "2.UMP3", "3.UMP3"]:
-                if f in possible_misses_suffix: possible_misses_suffix.remove(f)
-
-            print("POSSIBLE MISSES:", possible_misses_suffix)
-
-            for file in possible_misses_suffix:
-                match = find_file_starting_with("/home/crclayton/Music/library", file.replace("MP3",""))
-                if match is None:
-                    print("-> Couldn't find starting with, trying ending with:", file, "->", file[1:])
-                    match = find_file_ending_with("/home/crclayton/Music/library", file[1:])
-                    if match is None:
-                        print(" -> Couldn't find starting with, trying ending with:", file, "->", file[2:])
-                        match = find_file_ending_with("/home/crclayton/Music/library", file[2:])
-                        if match is None:
-                            print("  -> Couldn't find starting with, trying ending with:", file, "->", file[3:])
-                            match = find_file_ending_with("/home/crclayton/Music/library", file[3:])
-                            if match is None:
-                                print("STILL MISSING:", file) 
-                                f = open("misses.txt", "a")
-                                f.write(str(file) + "\n")
-                                f.close()
-                                continue
-
-                match = os.path.basename(match)
-                print("Resolved miss:", file.replace("MP3",""), "->", match)
-                matches.append(match)
-
-
-            #possible_misses_prefix
-
-
-
-
-        matches = [m for m in matches if not m is None]
-        return matches
-
-    except FileNotFoundError:
-        print(f"Error: File not found at {filepath}")
-        return []
-    #except Exception as e:
-    #    print(f"An unexpected error occurred: {e}")
-    #    return []
-
-import os
-import shutil
-
-def copy_files_by_name(src_dir, dest_dir, filenames):
-    """Recursively search for files by name and copy them to a given directory."""
-
-    # Ensure destination directory exists, create if not
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-
-    found = []
-
-    # Loop through the directory and subdirectories
-    for root, _, files in os.walk(src_dir):
-        for file in files:
-            # If the file is in the list of filenames, copy it
-            if file in filenames:
-                src_file_path = os.path.join(root, file)
-                dest_file_path = os.path.join(dest_dir, file)
-
-                # If a file with the same name already exists in the destination, we can skip or overwrite
-                if os.path.exists(dest_file_path):
-                    print(f"File {file} already exists in destination, skipping.")
-                    pass
-                else:
-                    shutil.copy(src_file_path, dest_file_path)
-                    print(f"Copied {file} to {dest_dir}")
-
-                found.append(file)
-            #else:
-            #    print("Not found: ", file)
-
-
-
-    print("File search and copy completed.")
-
-files = {
-        "/media/crclayton/MP3/USERPL1.PL":  "/home/crclayton/Music/library/Playlists/soft",
-        "/media/crclayton/MP3/USERPL2.PL":  "/home/crclayton/Music/library/Playlists/medium",
-        "/media/crclayton/MP3/USERPL3.PL":  "/home/crclayton/Music/library/Playlists/hard",
+if __name__ == "__main__":
+    # map each playlist to a difficulty folder
+    playlists = {
+        "/media/crclayton/MP3/USERPL1.PL":
+            "/home/crclayton/Music/library/Playlists/soft",
+        "/media/crclayton/MP3/USERPL2.PL":
+            "/home/crclayton/Music/library/Playlists/medium",
+        "/media/crclayton/MP3/USERPL3.PL":
+            "/home/crclayton/Music/library/Playlists/hard",
     }
+    LIBRARY_DIR = "/home/crclayton/Music/library"
 
-for playlist_file, playlist_dir in files.items():
-    mp3_list = extract_mp3_filenames_iso88591(playlist_file)
-    print("MP3 list", mp3_list)
-    copy_files_by_name("library", playlist_dir, mp3_list)
-    print("")
+    for pl_file, out_dir in playlists.items():
+        print(f"\n=== Processing {os.path.basename(pl_file)} → {out_dir} ===")
+        names = extract_mp3_filenames_iso88591(pl_file)
+        copy_with_fuzzy(LIBRARY_DIR, out_dir, names, LIBRARY_DIR)
 
