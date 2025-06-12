@@ -13,10 +13,10 @@ YEAR_PREFIX = re.compile(r'^\d{4}-')
 def get_album_dirs(source: Path):
     """
     Recursively collect all album directories under source whose names start with a year,
-    excluding the 'Random_Albums' folder itself.
+    excluding the 'random_albums' folder itself.
     """
     albums = []
-    skip = source / "Random_Albums"
+    skip = source / "random_albums"
     for root, subdirs, _ in os.walk(source):
         if Path(root) == skip:
             continue
@@ -35,12 +35,12 @@ def main():
     )
     parser.add_argument(
         "--source", type=Path,
-        default=Path("/home/crclayton/Music/library"),
+        default=Path("/home/crclayton/Music/library/genres"),
         help="Root folder of library library"
     )
     parser.add_argument(
         "--dest", type=Path,
-        default=Path("/home/crclayton/Music/library/Random_Albums"),
+        default=Path("/home/crclayton/Music/library/random_albums"),
         help="Destination for recently added albums"
     )
     parser.add_argument(

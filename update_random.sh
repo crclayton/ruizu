@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ALBUM_DIR="/home/crclayton/Music/library/Random_Albums"
-SONG_DIR="/home/crclayton/Music/library/Random_Songs"
+ALBUM_DIR="/home/crclayton/Music/library/random_albums"
+SONG_DIR="/home/crclayton/Music/library/random_songs"
 
 NUM_SONGS=100
 NUM_ALBUMS=20
@@ -12,7 +12,7 @@ mkdir -p "$SONG_DIR"
 rm $SONG_DIR/* -rf
 
 # Find all mp3 files and store them in an array
-mp3_files=($(find library/ -type f -iname "*.mp3"))
+mp3_files=($(find library/genres/ -type f -iname "*.mp3"))
 
 # Get the total number of mp3 files
 total_files=${#mp3_files[@]}

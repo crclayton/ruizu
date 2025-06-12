@@ -4,8 +4,9 @@ SOURCE_DIR=~/Music/library
 TARGET_DIR=/media/crclayton/MP3
 
 
-rm /media/crclayton/MP3/Recently_Added/* -rf
-rm /media/crclayton/MP3/Random_Weekly/* -rf
+rm /media/crclayton/MP3/recently_added/* -rf
+rm /media/crclayton/MP3/random_albums/* -rf
+rm /media/crclayton/MP3/random_songs/* -rf
 
 
 echo "🔍 Scanning for MP3 files in $SOURCE_DIR..."

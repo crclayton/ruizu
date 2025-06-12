@@ -10,11 +10,11 @@ cp /media/crclayton/MP3/USERPL2.PL .
 cp /media/crclayton/MP3/USERPL3.PL .
 python3 save_playlists.py
 
-echo "--- Creating Liked Folder from Playlists ---"
+echo "--- Creating Liked Folder from playlists ---"
 
-cp ~/Music/library/Playlists/hard/*   ~/Music/library/Playlists/liked
-cp ~/Music/library/Playlists/medium/* ~/Music/library/Playlists/liked
-cp ~/Music/library/Playlists/soft/*   ~/Music/library/Playlists/liked
+cp ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
+cp ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
+cp ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
 
 # update to SD card
 #rm /media/crclayton/7C3F-6B90/* -rf

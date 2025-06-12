@@ -92,21 +92,24 @@ def copy_with_fuzzy(src_root, dest_dir, raw_names, lib_dir):
             dst = os.path.join(dest_dir, os.path.basename(match))
             if not os.path.exists(dst):
                 shutil.copy(match, dst)
-                print(f"✓ {raw} → {os.path.basename(match)}")
+                print(f"✓ {raw} → {match}")
             else:
-                print(f"⚠ {raw}: already exists, skipped")
+                pass
+                print(f"⚠ {raw} - {match}: already exists, skipped")
         else:
             print(f"✗ {raw}: NO MATCH")
+            with open("misses.txt","rb") as f:
+                f.writeline(raw)
 
 if __name__ == "__main__":
     # map each playlist to a difficulty folder
     playlists = {
-        "/media/crclayton/MP3/USERPL1.PL":
-            "/home/crclayton/Music/library/Playlists/soft",
-        "/media/crclayton/MP3/USERPL2.PL":
-            "/home/crclayton/Music/library/Playlists/medium",
-        "/media/crclayton/MP3/USERPL3.PL":
-            "/home/crclayton/Music/library/Playlists/hard",
+        "/home/crclayton/Music/USERPL1.PL":
+            "/home/crclayton/Music/library/playlists/soft",
+        "/home/crclayton/Music/USERPL2.PL":
+            "/home/crclayton/Music/library/playlists/medium",
+        "/home/crclayton/Music/USERPL3.PL":
+            "/home/crclayton/Music/library/playlists/hard",
     }
     LIBRARY_DIR = "/home/crclayton/Music/library"
 

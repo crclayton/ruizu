@@ -5,9 +5,9 @@
 #find /home/crclayton/Music/ytmdl -mindepth 1 -maxdepth 1 -type d
 
 # copy new downloads
-#find /home/crclayton/Music/spotdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/Recently_Added \;
-#find /home/crclayton/Music/bandcamp -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/Recently_Added \;
-#find /home/crclayton/Music/ytmdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/Recently_Added \;
+#find /home/crclayton/Music/spotdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
+#find /home/crclayton/Music/bandcamp -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
+#find /home/crclayton/Music/ytmdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
 
 echo ""
 echo "--- Starting update ---"
@@ -17,20 +17,20 @@ echo ""
 echo "--- Clearing auto folders ---"
 echo ""
 
-rm ~/Music/library/Recently_Added/* -rf
-rm ~/Music/library/Random_Albums/* -rf
-rm ~/Music/library/Random_Songs/* -rf
+rm ~/Music/library/recently_added/* -rf
+rm ~/Music/library/random_albums/* -rf
+rm ~/Music/library/random_songs/* -rf
 
 echo ""
 echo "--- Contents ---"
 echo ""
 
-ls ~/Music/library/Recently_Added/
-ls ~/Music/library/Random_Albums/
-ls ~/Music/library/Random_Songs/
+ls ~/Music/library/recently_added/
+ls ~/Music/library/random_albums/
+ls ~/Music/library/random_songs/
 
 echo ""
-echo "--- Recently created albums: ---"
+echo "--- recently created albums: ---"
 echo ""
 
 python3 move_recently_added.py --count 20
@@ -39,7 +39,7 @@ python3 move_recently_added.py --count 20
 
 #echo "--- Copying into folder ---"
 
-#find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/Recently_Added \;
+#find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
 
 #echo "--- 2025 albums: ---"
 
@@ -47,7 +47,7 @@ python3 move_recently_added.py --count 20
 
 #echo "--- Copying into folder ---"
 
-#find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/Recently_Added \;
+#find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
 
 echo ""
 echo "--- Creating random playlists ---"
@@ -57,6 +57,14 @@ echo ""
 bash update_random.sh
 
 python3 move_random.py --count 20
+
+echo ""
+echo "--- Copying strawberry playlists to folders ---"
+echo ""
+
+python3 copy_xspf.py soft.xspf   library/playlists/soft/
+python3 copy_xspf.py medium.xspf library/playlists/medium/
+python3 copy_xspf.py hard.xspf   library/playlists/hard/
 
 # encode correct
 detox library/ -r -v
