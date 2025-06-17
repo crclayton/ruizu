@@ -111,7 +111,7 @@ if __name__ == "__main__":
         "/home/crclayton/Music/USERPL3.PL":
             "/home/crclayton/Music/library/playlists/hard",
     }
-    LIBRARY_DIR = "/home/crclayton/Music/library"
+    LIBRARY_DIR = "/home/crclayton/Music/library/genres"
 
     for pl_file, out_dir in playlists.items():
         print(f"\n=== Processing {os.path.basename(pl_file)} → {out_dir} ===")

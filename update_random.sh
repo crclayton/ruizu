@@ -3,8 +3,8 @@
 ALBUM_DIR="/home/crclayton/Music/library/random_albums"
 SONG_DIR="/home/crclayton/Music/library/random_songs"
 
-NUM_SONGS=100
-NUM_ALBUMS=20
+NUM_SONGS=200
+NUM_ALBUMS=30
 
 # Create the destination directory if it doesn't exist
 mkdir -p "$SONG_DIR"

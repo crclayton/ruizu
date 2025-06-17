@@ -41,13 +41,13 @@ python3 move_recently_added.py --count 20
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
 
-#echo "--- 2025 albums: ---"
+echo "--- 2025 albums: ---"
 
-#find library/ -type d -name "2025-*"
+find library/ -type d -name "2025-*"
 
-#echo "--- Copying into folder ---"
+echo "--- Copying into folder ---"
 
-#find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
+find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
 
 echo ""
 echo "--- Creating random playlists ---"
@@ -65,6 +65,15 @@ echo ""
 python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
+
+mv soft.xspf   soft.backup
+mv medium.xspf medium.backup
+mv hard.xspf   hard.backup
+
+python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
+python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
+python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
+
 
 # encode correct
 detox library/ -r -v
