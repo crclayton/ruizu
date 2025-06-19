@@ -21,6 +21,7 @@ def parse_xspf(xspf_path):
             print("Not found")
             continue
         uri = loc.text.strip()
+        uri = uri.replace("file:","")
         yield uri
         # Only handle file:// URIs
         #parsed = urllib.parse.urlparse(uri)
@@ -40,6 +41,9 @@ def copy_files(file_paths, dest_dir):
     dest.mkdir(parents=True, exist_ok=True)
     for src in file_paths:
         src_path = Path(src)
+        if "/playlists/" in str(src_path):
+            #print("Already in playlists: " + str(src_path))
+            continue
         if src_path.exists():
             target = dest / src_path.name
             shutil.copy2(src_path, target)

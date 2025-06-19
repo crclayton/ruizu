@@ -62,6 +62,7 @@ echo ""
 echo "--- Copying strawberry playlists to folders ---"
 echo ""
 
+# copy files in the xspf into the folder
 python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
@@ -70,10 +71,14 @@ mv soft.xspf   soft.backup
 mv medium.xspf medium.backup
 mv hard.xspf   hard.backup
 
+# creating a new xspf from what's in the folder
 python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
 python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
 python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
 
+echo ""
+echo "--- Running detox ---"
+echo ""
 
 # encode correct
 detox library/ -r -v

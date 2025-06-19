@@ -10,6 +10,14 @@ cp /media/crclayton/MP3/USERPL2.PL .
 cp /media/crclayton/MP3/USERPL3.PL .
 python3 save_playlists.py
 
+echo "--- Recreating the playlist files ---"
+
+# creating a new xspf from what's in the folder
+python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
+python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
+python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
+
+
 echo "--- Creating Liked Folder from playlists ---"
 
 cp ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
