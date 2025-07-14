@@ -20,6 +20,7 @@ echo ""
 rm ~/Music/library/recently_added/* -rf
 rm ~/Music/library/random_albums/* -rf
 rm ~/Music/library/random_songs/* -rf
+rm ~/Music/library/random_new/* -rf
 
 echo ""
 echo "--- Contents ---"
@@ -28,6 +29,7 @@ echo ""
 ls ~/Music/library/recently_added/
 ls ~/Music/library/random_albums/
 ls ~/Music/library/random_songs/
+ls ~/Music/library/random_new/
 
 echo ""
 echo "--- recently created albums: ---"
@@ -75,6 +77,7 @@ mv hard.xspf   hard.backup
 python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
 python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
 python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
+python3 sync_xspf.py library/playlists/liked/  -o liked.xspf
 
 echo ""
 echo "--- Running detox ---"

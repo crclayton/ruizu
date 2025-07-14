@@ -24,10 +24,42 @@ cp ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
 cp ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
 cp ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
 
+echo "--- Recreating the playlist files ---"
+
+python3 sync_xspf.py library/playlists/liked/  -o liked.xspf
+
 # update to SD card
 #rm /media/crclayton/7C3F-6B90/* -rf
 
 #fatsort -cn /media/crclayton/MP3
+
+echo "--- Adding shuffled playlist files ---"
+
+rm /media/crclayton/MP3/playlists/liked/*
+rm /media/crclayton/MP3/playlists/soft/*
+rm /media/crclayton/MP3/playlists/medium/*
+rm /media/crclayton/MP3/playlists/hard/*
+
+mkdir -p /media/crclayton/MP3/playlists/liked/
+find ~/Music/library/playlists/liked/ -type f | shuf | while read file; do
+  cp "$file" /media/crclayton/MP3/playlists/liked/
+  echo "liked $file"
+done
+
+mkdir -p /media/crclayton/MP3/playlists/soft/
+find ~/Music/library/playlists/soft/ -type f | shuf | while read file; do
+  cp "$file" /media/crclayton/MP3/playlists/soft/
+done
+
+mkdir -p /media/crclayton/MP3/playlists/medium/
+find ~/Music/library/playlists/medium/ -type f | shuf | while read file; do
+  cp "$file" /media/crclayton/MP3/playlists/medium/
+done
+
+mkdir -p /media/crclayton/MP3/playlists/hard/
+find ~/Music/library/playlists/hard/ -type f | shuf | while read file; do
+  cp "$file" /media/crclayton/MP3/playlists/hard/
+done
 
 echo "--- Uploading library files to SD ---"
 
@@ -36,7 +68,10 @@ bash sync_music.sh
 echo "--- Deleting SD files not in library ---"
 
 rsync -hvrltD --modify-window=2 --size-only --delete ~/Music/library/ /media/crclayton/MP3
-#cp USERPL* /media/crclayton/MP3
+
+cp ~/Music/USERPL1.PL /media/crclayton/MP3
+cp ~/Music/USERPL2.PL /media/crclayton/MP3
+cp ~/Music/USERPL3.PL /media/crclayton/MP3
 
 #udisks --unmount  /media/crclayton/7C3F-6B90
 #udisks --detatch  /media/crclayton/7C3F-6B90
