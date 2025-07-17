@@ -41,15 +41,15 @@ python3 move_recently_added.py --count 20
 
 #echo "--- Copying into folder ---"
 
-#find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
+find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
 
 echo "--- 2025 albums: ---"
 
-find library/ -type d -name "2025-*"
+#find library/ -type d -name "2025-*"
 
 echo "--- Copying into folder ---"
 
-find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
+#find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
 
 echo ""
 echo "--- Creating random playlists ---"

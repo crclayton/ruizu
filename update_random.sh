@@ -41,7 +41,7 @@ mp3_files=($(find $RECENT_DIR -type f -iname "*.mp3"))
 # Get the total number of mp3 files
 total_files=${#mp3_files[@]}
 
-NUM_SONGS=50
+NUM_SONGS=100
 
 # Check if there are enough mp3 files
 if [ "$total_files" -lt "$NUM_SONGS" ]; then
