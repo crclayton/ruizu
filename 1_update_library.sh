@@ -41,7 +41,7 @@ python3 move_recently_added.py --count 20
 
 #echo "--- Copying into folder ---"
 
-find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
+#find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
 
 echo "--- 2025 albums: ---"
 
@@ -58,7 +58,7 @@ echo ""
 # create new shuffle playlist
 bash update_random.sh
 
-python3 move_random.py --count 20
+python3 move_random.py --count 10
 
 echo ""
 echo "--- Copying strawberry playlists to folders ---"

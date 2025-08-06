@@ -3,6 +3,14 @@
   <title>soft</title>
   <trackList>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-American_Music.mp3</location>
+      <title>01-American_Music</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Blitzkrieg_Bop-2016_Remaster.mp3</location>
+      <title>01-Blitzkrieg_Bop-2016_Remaster</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01-Circles.mp3</location>
       <title>01-Circles</title>
       </track>
@@ -31,6 +39,14 @@
       <title>01-First_song</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Happy_New_Year_Next_Year.mp3</location>
+      <title>01-Happy_New_Year_Next_Year</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-If_You_re_Wondering_If_I_Want_You_To_I_Want_You_To.mp3</location>
+      <title>01-If_You_re_Wondering_If_I_Want_You_To_I_Want_You_To</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01-Janie_Jones.mp3</location>
       <title>01-Janie_Jones</title>
       </track>
@@ -47,16 +63,40 @@
       <title>01-Man_Made_of_Meat</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Old_Friends.mp3</location>
+      <title>01-Old_Friends</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01-Skinhead_Moonstomp.mp3</location>
       <title>01-Skinhead_Moonstomp</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Stumped.mp3</location>
+      <title>01-Stumped</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01-The_Overload.mp3</location>
       <title>01-The_Overload</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Total_Football.mp3</location>
+      <title>01-Total_Football</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-Waiting_Room.mp3</location>
+      <title>01-Waiting_Room</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01-formed-a-band.mp3</location>
+      <title>01-formed-a-band</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Alice.mp3</location>
       <title>01_Alice</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Au_Revoir_Adios_.mp3</location>
+      <title>01_Au_Revoir_Adios_</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Bam_Bam.mp3</location>
@@ -71,12 +111,32 @@
       <title>01_Cannonball</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Classics_of_Love.mp3</location>
+      <title>01_Classics_of_Love</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Clean_Up_Woman.mp3</location>
+      <title>01_Clean_Up_Woman</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Conqueror.mp3</location>
+      <title>01_Conqueror</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Contradictions.mp3</location>
       <title>01_Contradictions</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Cubicle.mp3</location>
+      <title>01_Cubicle</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Cut_From_the_Cloth.mp3</location>
       <title>01_Cut_From_the_Cloth</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Flashlight.mp3</location>
+      <title>01_Flashlight</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Fluorescent_Adolescent.mp3</location>
@@ -85,6 +145,18 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Funky_Kingston.mp3</location>
       <title>01_Funky_Kingston</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Garden_Grove.mp3</location>
+      <title>01_Garden_Grove</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Ghost_Choir.mp3</location>
+      <title>01_Ghost_Choir</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Gorillaz-Re-Hash.mp3</location>
+      <title>01_Gorillaz-Re-Hash</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Headbutt_main_mix_.mp3</location>
@@ -99,12 +171,20 @@
       <title>01_House_Warning_Party</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_How_Far_Our_Bodies_Go.mp3</location>
+      <title>01_How_Far_Our_Bodies_Go</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Israelites.mp3</location>
       <title>01_Israelites</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Johnny_Appleseed.mp3</location>
       <title>01_Johnny_Appleseed</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Look_At_Miss_Ohio.mp3</location>
+      <title>01_Look_At_Miss_Ohio</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Love_Delicatessen.mp3</location>
@@ -119,6 +199,10 @@
       <title>01_Nobody_Likes_Me</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Picking_Sides.mp3</location>
+      <title>01_Picking_Sides</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Raid.mp3</location>
       <title>01_Raid</title>
       </track>
@@ -129,6 +213,18 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Steamboat_Willie.mp3</location>
       <title>01_Steamboat_Willie</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Suffer_the_Children_Come_Unto_Me.mp3</location>
+      <title>01_Suffer_the_Children_Come_Unto_Me</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_The_Windows_Break.mp3</location>
+      <title>01_The_Windows_Break</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/01_Tomorrow_Comes_Today.mp3</location>
+      <title>01_Tomorrow_Comes_Today</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/01_Us_Boys_Run.mp3</location>
@@ -143,8 +239,28 @@
       <title>01_When_It_Feels_Right</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-101_N.mp3</location>
+      <title>02-101_N</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Chaise_Longue.mp3</location>
+      <title>02-Chaise_Longue</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Chronic_Pain.mp3</location>
+      <title>02-Chronic_Pain</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Downpressor_Man.mp3</location>
+      <title>02-Downpressor_Man</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-Evil_Everywhere.mp3</location>
       <title>02-Evil_Everywhere</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Field_Day_for_the_Sundays-2006_Remastered_Version.mp3</location>
+      <title>02-Field_Day_for_the_Sundays-2006_Remastered_Version</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-Fire_Water_Burn.mp3</location>
@@ -153,6 +269,14 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-Good_Guys_Dont_Wear_White.mp3</location>
       <title>02-Good_Guys_Dont_Wear_White</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Gravity_Rides_Everything.mp3</location>
+      <title>02-Gravity_Rides_Everything</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-I_Hear_The_Rain_Remastered_2024.mp3</location>
+      <title>02-I_Hear_The_Rain_Remastered_2024</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-In_Came_The_Flood.mp3</location>
@@ -171,12 +295,28 @@
       <title>02-Make_The_Cut</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-Out_The_Window.mp3</location>
+      <title>02-Out_The_Window</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-Peggy_Sue.mp3</location>
       <title>02-Peggy_Sue</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02-Violence.mp3</location>
       <title>02-Violence</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02-my-little-brother.mp3</location>
+      <title>02-my-little-brother</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02_5_4.mp3</location>
+      <title>02_5_4</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02_Alone.mp3</location>
+      <title>02_Alone</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02_Celeste.mp3</location>
@@ -203,12 +343,20 @@
       <title>02_Jaws_of_Life</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02_Maps.mp3</location>
+      <title>02_Maps</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02_Mr._Misery.mp3</location>
       <title>02_Mr._Misery</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02_The_List.mp3</location>
       <title>02_The_List</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/02_Three-Chord_Circus.mp3</location>
+      <title>02_Three-Chord_Circus</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/02_What_a_Complex.mp3</location>
@@ -227,8 +375,16 @@
       <title>03-By_Myself</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03-Community_College.mp3</location>
+      <title>03-Community_College</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03-Country_Song.mp3</location>
       <title>03-Country_Song</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03-Crosstown_Traffic.mp3</location>
+      <title>03-Crosstown_Traffic</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03-Insane_in_the_Brain.mp3</location>
@@ -241,6 +397,18 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03-Little_Changes.mp3</location>
       <title>03-Little_Changes</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03-Maybellene.mp3</location>
+      <title>03-Maybellene</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03-Please_Do_Not_Go.mp3</location>
+      <title>03-Please_Do_Not_Go</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03-Rollin_Over.mp3</location>
+      <title>03-Rollin_Over</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03-SAD_KIDS.mp3</location>
@@ -259,16 +427,36 @@
       <title>03-Time_Shrinks</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_Blue_Ska.mp3</location>
+      <title>03_Blue_Ska</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_Burial.mp3</location>
       <title>03_Burial</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_Cough_It_Out.mp3</location>
+      <title>03_Cough_It_Out</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_D.J._D.J..mp3</location>
       <title>03_D.J._D.J.</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_Flobots-Defend_Atlantis.mp3</location>
+      <title>03_Flobots-Defend_Atlantis</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_I_Still_Believe.mp3</location>
       <title>03_I_Still_Believe</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_Issues.mp3</location>
+      <title>03_Issues</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_No_Nazis_Friend.mp3</location>
+      <title>03_No_Nazis_Friend</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_Oh_Susquehanna.mp3</location>
@@ -277,6 +465,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_Spirit_in_the_Sky.mp3</location>
       <title>03_Spirit_in_the_Sky</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/03_Transplants-Gangsters_and_Thugs.mp3</location>
+      <title>03_Transplants-Gangsters_and_Thugs</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/03_Up_To_No_Good.mp3</location>
@@ -319,6 +511,18 @@
       <title>04-Come_Into_My_Life-Single_Version</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-Day_In_Day_Out.mp3</location>
+      <title>04-Day_In_Day_Out</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-Evil_s_My_Friend.mp3</location>
+      <title>04-Evil_s_My_Friend</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-Fast_Horses.mp3</location>
+      <title>04-Fast_Horses</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Good_News.mp3</location>
       <title>04-Good_News</title>
       </track>
@@ -329,6 +533,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Mind_Like_Mine.mp3</location>
       <title>04-Mind_Like_Mine</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-New_Inheritors.mp3</location>
+      <title>04-New_Inheritors</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Punk_Rock_Loser.mp3</location>
@@ -347,12 +555,20 @@
       <title>04-Sentient_Beer</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-This_Respirator.mp3</location>
+      <title>04-This_Respirator</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Trawlerman.mp3</location>
       <title>04-Trawlerman</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Turn_Up.mp3</location>
       <title>04-Turn_Up</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04-Voodoo_Chile.mp3</location>
+      <title>04-Voodoo_Chile</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04-Weighty_Ghost.mp3</location>
@@ -363,12 +579,24 @@
       <title>04-smart-punks</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_After_Midnight.mp3</location>
+      <title>04_After_Midnight</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Anchorless.mp3</location>
       <title>04_Anchorless</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Armalite_Rifle.mp3</location>
       <title>04_Armalite_Rifle</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_Busker_s_Wages.mp3</location>
+      <title>04_Busker_s_Wages</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_Danger_High_Voltage.mp3</location>
+      <title>04_Danger_High_Voltage</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Doctor_My_Eyes.mp3</location>
@@ -387,12 +615,24 @@
       <title>04_Ghetto_Afterthought</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_Help.mp3</location>
+      <title>04_Help</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_I_Came_I_Saw.mp3</location>
       <title>04_I_Came_I_Saw</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_It_s_Only_the_End_of_the_World.mp3</location>
+      <title>04_It_s_Only_the_End_of_the_World</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Laugh.mp3</location>
       <title>04_Laugh</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_Mountain.mp3</location>
+      <title>04_Mountain</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Older_and_Poorer.mp3</location>
@@ -401,6 +641,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_On_My_Own_Track.mp3</location>
       <title>04_On_My_Own_Track</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/04_Poor_Boy.mp3</location>
+      <title>04_Poor_Boy</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/04_Rich.mp3</location>
@@ -419,12 +663,32 @@
       <title>04_Walking_Is_Still_Honest</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05-Dunce.mp3</location>
+      <title>05-Dunce</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05-Empty_Shed.mp3</location>
       <title>05-Empty_Shed</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05-Equal_Rights.mp3</location>
+      <title>05-Equal_Rights</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05-He_Was_a_Jazzman.mp3</location>
+      <title>05-He_Was_a_Jazzman</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05-Itll_Hurt.mp3</location>
       <title>05-Itll_Hurt</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05-Lola_2020_Stereo_Remaster_.mp3</location>
+      <title>05-Lola_2020_Stereo_Remaster_</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05-Never_coming_home.mp3</location>
+      <title>05-Never_coming_home</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05-ORANGE_COUNTY.mp3</location>
@@ -447,12 +711,24 @@
       <title>05-The_Bad_Touch</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Common_Rider-Where_the_Waves_Are_Highest.mp3</location>
+      <title>05_Common_Rider-Where_the_Waves_Are_Highest</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05_Countryman_Fiddle.mp3</location>
       <title>05_Countryman_Fiddle</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05_He_Was_a_Jazzman.mp3</location>
       <title>05_He_Was_a_Jazzman</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Holiday_in_Cambodia.mp3</location>
+      <title>05_Holiday_in_Cambodia</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Laugh_Till_I_Cry.mp3</location>
+      <title>05_Laugh_Till_I_Cry</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05_Louie_Louie.mp3</location>
@@ -463,8 +739,24 @@
       <title>05_No_More_Crying</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Rivers_and_Roads.mp3</location>
+      <title>05_Rivers_and_Roads</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Suckers.mp3</location>
+      <title>05_Suckers</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_Sunshine.mp3</location>
+      <title>05_Sunshine</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05_Sweet_Release.mp3</location>
       <title>05_Sweet_Release</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/05_The_Importance_of_Being_Idle.mp3</location>
+      <title>05_The_Importance_of_Being_Idle</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/05_Wait_a_Minute.mp3</location>
@@ -479,6 +771,14 @@
       <title>06-African</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06-Black_History_Month.mp3</location>
+      <title>06-Black_History_Month</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06-Bobby_Lee.mp3</location>
+      <title>06-Bobby_Lee</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06-Freebird_II.mp3</location>
       <title>06-Freebird_II</title>
       </track>
@@ -487,8 +787,24 @@
       <title>06-Going_Nowhere</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06-Howl.mp3</location>
+      <title>06-Howl</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06-Missed_the_Boat.mp3</location>
+      <title>06-Missed_the_Boat</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06-Strange_Euphoria.mp3</location>
+      <title>06-Strange_Euphoria</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06-good-weekend.mp3</location>
       <title>06-good-weekend</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_Art_School_Wannabe.mp3</location>
+      <title>06_Art_School_Wannabe</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06_Blaze_This_Weed.mp3</location>
@@ -497,6 +813,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06_Express_Yourself.mp3</location>
       <title>06_Express_Yourself</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_Feed_My_Girl.mp3</location>
+      <title>06_Feed_My_Girl</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06_Flyin_High.mp3</location>
@@ -515,12 +835,40 @@
       <title>06_She_Hates_Me</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_Terrible_Thing.mp3</location>
+      <title>06_Terrible_Thing</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_That_Time_of_the_Month.mp3</location>
+      <title>06_That_Time_of_the_Month</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_The_Hold_Up.mp3</location>
+      <title>06_The_Hold_Up</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_The_War.mp3</location>
+      <title>06_The_War</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/06_Who_You_Know.mp3</location>
       <title>06_Who_You_Know</title>
       </track>
     <track>
-      <location>file:///home/crclayton/Music/library/playlists/soft/07-Bad_Life.mp3</location>
-      <title>07-Bad_Life</title>
+      <location>file:///home/crclayton/Music/library/playlists/soft/06_Wishing_Well.mp3</location>
+      <title>06_Wishing_Well</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07-Bad_Influence.mp3</location>
+      <title>07-Bad_Influence</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07-El_Scorcho.mp3</location>
+      <title>07-El_Scorcho</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07-Monumental.mp3</location>
+      <title>07-Monumental</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/07-The_Harder_They_Come-Single_Version.mp3</location>
@@ -543,8 +891,16 @@
       <title>07_Chained_to_the_Couch</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07_Flobots-Airplane_Mode.mp3</location>
+      <title>07_Flobots-Airplane_Mode</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/07_Good_Times_Roll_On_.mp3</location>
       <title>07_Good_Times_Roll_On_</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07_In_Too_Deep.mp3</location>
+      <title>07_In_Too_Deep</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/07_Peachy.mp3</location>
@@ -553,6 +909,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/07_Submersible.mp3</location>
       <title>07_Submersible</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/07_The_Feud.mp3</location>
+      <title>07_The_Feud</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/07_This_Is_War.mp3</location>
@@ -571,16 +931,64 @@
       <title>08-007_Shanty_Town_</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08-Apartheid.mp3</location>
+      <title>08-Apartheid</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/08-Echolocation.mp3</location>
       <title>08-Echolocation</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08-Mailman_Bring_Me_No_More_Blues.mp3</location>
+      <title>08-Mailman_Bring_Me_No_More_Blues</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08-Mastering_the_Worlds_Smallest_Violin.mp3</location>
+      <title>08-Mastering_the_Worlds_Smallest_Violin</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08-Steamboat_Willie.mp3</location>
+      <title>08-Steamboat_Willie</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08-Till_Your_Well_Runs_Dry.mp3</location>
+      <title>08-Till_Your_Well_Runs_Dry</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08_Combat.mp3</location>
+      <title>08_Combat</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/08_Feel_It.mp3</location>
       <title>08_Feel_It</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08_Gay_Bar.mp3</location>
+      <title>08_Gay_Bar</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/08_Just_One.mp3</location>
       <title>08_Just_One</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08_Monkey_Man.mp3</location>
+      <title>08_Monkey_Man</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/08_The_Landlord_s_Daughter.mp3</location>
+      <title>08_The_Landlord_s_Daughter</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09-Big_Nothing.mp3</location>
+      <title>09-Big_Nothing</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09-Career_Opportunities.mp3</location>
+      <title>09-Career_Opportunities</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09-Its_Gonna_Rain_Remastered_2024.mp3</location>
+      <title>09-Its_Gonna_Rain_Remastered_2024</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/09-Little_Table.mp3</location>
@@ -589,6 +997,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/09-Pressure_Drop.mp3</location>
       <title>09-Pressure_Drop</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09-Terrible_Man.mp3</location>
+      <title>09-Terrible_Man</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/09-Wide_Awake.mp3</location>
@@ -603,24 +1015,80 @@
       <title>09_Civilian_Ways</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Flobots-Good_Soldier.mp3</location>
+      <title>09_Flobots-Good_Soldier</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/09_Gimmie_Something.mp3</location>
       <title>09_Gimmie_Something</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Great_British_Summertime.mp3</location>
+      <title>09_Great_British_Summertime</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_I_Held_Her_in_My_Arms.mp3</location>
+      <title>09_I_Held_Her_in_My_Arms</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/09_Little_Sadie.mp3</location>
       <title>09_Little_Sadie</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Maria.mp3</location>
+      <title>09_Maria</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Once_We_Were_Anarchists.mp3</location>
+      <title>09_Once_We_Were_Anarchists</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Pawn_Shop.mp3</location>
+      <title>09_Pawn_Shop</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_She_s_Electric.mp3</location>
+      <title>09_She_s_Electric</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/09_Suburban_Home.mp3</location>
+      <title>09_Suburban_Home</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-02_The_Band-Up_on_Cripple_Creek.mp3</location>
+      <title>1-02_The_Band-Up_on_Cripple_Creek</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-02_Train_to_Glory.mp3</location>
+      <title>1-02_Train_to_Glory</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-04_Photosynthesis.mp3</location>
+      <title>1-04_Photosynthesis</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/1-04_X_Gon_Give_It_To_Ya.mp3</location>
       <title>1-04_X_Gon_Give_It_To_Ya</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-07_Caravan.mp3</location>
+      <title>1-07_Caravan</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/1-07_The_Right_Profile.mp3</location>
       <title>1-07_The_Right_Profile</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-12_Pomp_and_Pride.mp3</location>
+      <title>1-12_Pomp_and_Pride</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/1-13-Pow-Remastered_2009.mp3</location>
       <title>1-13-Pow-Remastered_2009</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/1-13_The_Band_with_Muddy_Waters-Mannish_Boy.mp3</location>
+      <title>1-13_The_Band_with_Muddy_Waters-Mannish_Boy</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/1-14-The_Maestro-Remastered_2009.mp3</location>
@@ -639,6 +1107,14 @@
       <title>10-Stoned_and_Starving</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/10_About_Bombs.mp3</location>
+      <title>10_About_Bombs</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/10_Anne_Braden.mp3</location>
+      <title>10_Anne_Braden</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/10_Bold_as_Brass.mp3</location>
       <title>10_Bold_as_Brass</title>
       </track>
@@ -647,8 +1123,16 @@
       <title>10_Convinced_I_m_Wrong</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/10_Heavier_Than_Lead.mp3</location>
+      <title>10_Heavier_Than_Lead</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/10_I_m_Walkin_.mp3</location>
       <title>10_I_m_Walkin_</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/10_Mischief_Brew-Roll_Me_Through_the_Gates_of_Hell.mp3</location>
+      <title>10_Mischief_Brew-Roll_Me_Through_the_Gates_of_Hell</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/10_Stupid_Decisions.mp3</location>
@@ -659,6 +1143,10 @@
       <title>10_This_Train</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/10_Working_Poor.mp3</location>
+      <title>10_Working_Poor</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/11-54-46_Was_My_Number.mp3</location>
       <title>11-54-46_Was_My_Number</title>
       </track>
@@ -667,8 +1155,20 @@
       <title>11-Cavalier_Eternel</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/11-I_Can_t_Win.mp3</location>
+      <title>11-I_Can_t_Win</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/11-Plough_Orion.mp3</location>
       <title>11-Plough_Orion</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/11-Supermarket.mp3</location>
+      <title>11-Supermarket</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/11_54-46_That_s_My_Number.mp3</location>
+      <title>11_54-46_That_s_My_Number</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/11_Dead_Quote_Olympics.mp3</location>
@@ -679,12 +1179,20 @@
       <title>11_Got_My_Mind_Set_on_You</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/11_It_Gets_Worse_Every_Minute.mp3</location>
+      <title>11_It_Gets_Worse_Every_Minute</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/11_One_Great_City_.mp3</location>
       <title>11_One_Great_City_</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/11_Scarlet_Begonias.mp3</location>
       <title>11_Scarlet_Begonias</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/12-Blues_For_Hawaiians.mp3</location>
+      <title>12-Blues_For_Hawaiians</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/12-Future_Island.mp3</location>
@@ -695,8 +1203,16 @@
       <title>12-Police_and_Thieves</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/12-Spitting_Venom.mp3</location>
+      <title>12-Spitting_Venom</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/12_Alternative_Ulster.mp3</location>
       <title>12_Alternative_Ulster</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/12_Bad_Town.mp3</location>
+      <title>12_Bad_Town</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/12_Hard_Drugs.mp3</location>
@@ -705,6 +1221,10 @@
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/12_Liquidator.mp3</location>
       <title>12_Liquidator</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/12_Public_Image_Limited-Rise.mp3</location>
+      <title>12_Public_Image_Limited-Rise</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/12_Punky_Reggae_Party_long_version_.mp3</location>
@@ -731,12 +1251,20 @@
       <title>13-HURT</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13-Hand_On_the_Glock.mp3</location>
+      <title>13-Hand_On_the_Glock</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/13-Outline_of_Your_Blood.mp3</location>
       <title>13-Outline_of_Your_Blood</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/13-People_As_Places_As_People.mp3</location>
       <title>13-People_As_Places_As_People</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13-Tenderness.mp3</location>
+      <title>13-Tenderness</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/13_Down_in_the_Valley.mp3</location>
@@ -747,24 +1275,76 @@
       <title>13_Dysfunctional</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13_Hey.mp3</location>
+      <title>13_Hey</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13_Mischief_Brew-Departure_Arrival.mp3</location>
+      <title>13_Mischief_Brew-Departure_Arrival</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/13_Mouthful_of_Cavities.mp3</location>
       <title>13_Mouthful_of_Cavities</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13_Wherever_You_Go.mp3</location>
+      <title>13_Wherever_You_Go</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/13_White_Guilt.mp3</location>
+      <title>13_White_Guilt</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/15_Take_Me_Home_Country_Roads.mp3</location>
       <title>15_Take_Me_Home_Country_Roads</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/16_Lars_Frederiksen_and_the_Bastards-The_Viking.mp3</location>
+      <title>16_Lars_Frederiksen_and_the_Bastards-The_Viking</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/17_Doin_Time.mp3</location>
       <title>17_Doin_Time</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/17_Naked_and_Famous_live_.mp3</location>
+      <title>17_Naked_and_Famous_live_</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/17_Take_It_Easy.mp3</location>
       <title>17_Take_It_Easy</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/17_Time_Machine.mp3</location>
+      <title>17_Time_Machine</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/18_Make_Me_Smile.mp3</location>
+      <title>18_Make_Me_Smile</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/18_Stand_Your_Ground.mp3</location>
+      <title>18_Stand_Your_Ground</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-04_The_Band-Ophelia.mp3</location>
+      <title>2-04_The_Band-Ophelia</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-05_Cherry_Oh_Baby.mp3</location>
+      <title>2-05_Cherry_Oh_Baby</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-05_On_the_Other_Side.mp3</location>
+      <title>2-05_On_the_Other_Side</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/2-05_The_Liquidator.mp3</location>
       <title>2-05_The_Liquidator</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-06_Well_Red.mp3</location>
+      <title>2-06_Well_Red</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/2-07_In_the_Midnight_Hour.mp3</location>
@@ -783,8 +1363,32 @@
       <title>2-09_The_Horse</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-12_Wake_the_Town.mp3</location>
+      <title>2-12_Wake_the_Town</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/2-13_How_Long.mp3</location>
+      <title>2-13_How_Long</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/20_Good_Feeling.mp3</location>
+      <title>20_Good_Feeling</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/24-02_Blood_and_Fire.mp3</location>
       <title>24-02_Blood_and_Fire</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/28_The_Band_with_The_Staples-The_Weight.mp3</location>
+      <title>28_The_Band_with_The_Staples-The_Weight</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/3-03_Beast_of_Burden.mp3</location>
+      <title>3-03_Beast_of_Burden</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/5500_Miles.mp3</location>
+      <title>5500_Miles</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/55_In_Came_the_Flood.mp3</location>
@@ -795,8 +1399,16 @@
       <title>63_Garrett_Dale_2016_Was..._OFFICIAL_VIDEO_</title>
       </track>
     <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/63_Louie.mp3</location>
+      <title>63_Louie</title>
+      </track>
+    <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/63_The_Taxpayers_Rob_Taxpayer_solo-Drinking_With_Mickey_Mantle_Acoustic_live_by_Andrew_Link.mp3</location>
       <title>63_The_Taxpayers_Rob_Taxpayer_solo-Drinking_With_Mickey_Mantle_Acoustic_live_by_Andrew_Link</title>
+      </track>
+    <track>
+      <location>file:///home/crclayton/Music/library/playlists/soft/646_Wait_So_Long.mp3</location>
+      <title>646_Wait_So_Long</title>
       </track>
     <track>
       <location>file:///home/crclayton/Music/library/playlists/soft/96_Peter_And_The_Wolf.mp3</location>

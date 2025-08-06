@@ -238,16 +238,146 @@ def extract_cover(mp3_path):
         '-an', '-vcodec', 'copy', 'cover.jpg'
     ], stderr=subprocess.DEVNULL)
 
-def make_video(mp3_path, filename):
+from mutagen.id3 import USLT
+
+import pyperclip
+
+def get_lyrics(mp3_path=None):
+    try:
+        text = pyperclip.paste()
+        return text.strip() if text else None
+    except Exception as e:
+        print(f"Error reading from clipboard: {e}")
+        return None
+
+
+#def get_lyrics(mp3_path):
+#    try:
+#        audio = MutagenFile(mp3_path)
+#        print(audio)
+#        if not audio or not hasattr(audio, 'tags'):
+#            print("here")
+#            return None
+#        for tag in audio.tags.values():
+#            if isinstance(tag, USLT):
+#                print(tag.text)
+#                return tag.text
+#    except Exception:
+#        pass
+#    return None
+
+
+#def make_video(mp3_path, filename):
+#    subprocess.run([
+#        'ffmpeg', '-y',
+#        '-loop', '1', '-i', 'cover.jpg',
+#        '-i', mp3_path,
+#        "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+#        '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '192k',
+#        '-pix_fmt', 'yuv420p', '-shortest',
+#        filename + '.mp4'
+#    ], check=True)
+
+
+import textwrap
+
+
+import textwrap
+import shlex
+
+import textwrap
+
+import re
+
+def escape_ffmpeg_text(text):
+    text = text.replace('\\', '\\\\')  # must come first
+    text = text.replace("'", "")
+    text = text.replace("  ", " ")
+    #text = text.replace('\n', r'\n')
+    text = re.sub(r'([:=%!?#])', r'\\\1', text)  # escape : = % ! ? #
+    return text
+
+def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
     subprocess.run([
         'ffmpeg', '-y',
-        '-loop', '1', '-i', 'cover.jpg',
+        '-i', input_jpg,
+        '-vf',
+        'scale=iw*min(1080/iw\\,1080/ih):ih*min(1080/iw\\,1080/ih):flags=lanczos,'
+        'pad=1080:1080:(1080-iw*min(1080/iw\\,1080/ih))/2:(1080-ih*min(1080/iw\\,1080/ih))/2:black',
+        output_jpg
+    ], check=True)
+
+
+def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
+    subprocess.run([
+        'ffmpeg', '-y',
+        '-i', input_jpg,
+        '-vf',
+        'scale=1080:-1:flags=lanczos,pad=1080:1080:(ow-iw)/2:(oh-ih)/2:black',
+        output_jpg
+    ], check=True)
+
+
+
+def make_video(mp3_path, filename):
+    lyrics = get_lyrics()
+
+
+
+    # Add 400px black padding below image
+
+    character_width = 74
+    font_size = 24#max(18, int(48 - len(lines)))
+
+    if lyrics:
+        # Clean and wrap lyrics
+        lyrics = '"' + escape_ffmpeg_text(lyrics.strip()) + '"'
+        wrapped = textwrap.wrap(lyrics.strip(), width=character_width)
+        lines = wrapped#[:12]
+        final_text = "\n".join(lines)
+
+        num_lines = len(lines) + 1
+        height = num_lines*32
+
+        vf_filters = []
+        vf_filters.append("pad=iw:ih+" + str(height) + ":0:0:black")
+
+        # FFmpeg escaping: backslashes, single quotes, newlines
+        safe_text = escape_ffmpeg_text(final_text)
+
+        safe_text = filename.center(character_width, u'\xa0') + "\n" + safe_text
+
+
+        print(safe_text)
+        print("Character count: ", len(safe_text))
+
+
+        #count: 714, font size: 24
+
+        drawtext = (
+            "drawtext="
+            "fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf:"
+            f"text='{safe_text}':"
+            "fontcolor=#FFB343:fontsize={}:".format(font_size) +
+            "borderw=1.5:bordercolor=black:"
+            "line_spacing=4:"
+            "x=(w-text_w)/2:y=h-" + str(int(height)-10)
+        )
+
+        vf_filters.append(drawtext)
+
+    vf_arg = ",".join(vf_filters)
+
+    subprocess.run([
+        'ffmpeg', '-y',
+        '-loop', '1', '-i', 'cover_1080.jpg',
         '-i', mp3_path,
-        "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
-        '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '192k',
-        '-pix_fmt', 'yuv420p', '-shortest',
+        '-vf', vf_arg,
+        '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
+        '-pix_fmt', 'yuvj420p', '-shortest',
         filename + '.mp4'
     ], check=True)
+
 
 def main():
     mp3 = get_current_mp3()
@@ -262,7 +392,8 @@ def main():
     print(info)
 
     extract_cover(mp3)
-    make_video(mp3, meta['artist'])
+    normalize_cover('cover.jpg', 'cover_1080.jpg')  # 👈 added step
+    make_video(mp3, meta['artist'] + " - " + meta['title']) #+ '"' + ", " + str(meta['year']))
     print("⇨ out.mp4 created")
     print(info)
     webbrowser.open("https://old.reddit.com/r/punk/submit/?title=" + info)

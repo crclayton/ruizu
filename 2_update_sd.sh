@@ -3,12 +3,12 @@
 
 # save the playlists
 #
-echo "--- Copying Saved MP3 Playlist Files to Folders ---"
-
-mv /media/crclayton/MP3/USERPL1.PL .
-mv /media/crclayton/MP3/USERPL2.PL .
-mv /media/crclayton/MP3/USERPL3.PL .
-python3 save_playlists.py
+#echo "--- Copying Saved MP3 Playlist Files to Folders ---"
+#
+#cp /media/crclayton/MP3/USERPL1.PL .
+#cp /media/crclayton/MP3/USERPL2.PL .
+#cp /media/crclayton/MP3/USERPL3.PL .
+#python3 save_playlists.py
 
 echo "--- Recreating the playlist files ---"
 
@@ -20,15 +20,15 @@ python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
 
 echo "--- Creating Liked Folder from playlists ---"
 
-cp ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
-cp ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
-cp ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
+cp -n ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
+cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
+cp -n ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
 
-cp ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
-cp ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
+cp -n ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
+cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
 
-cp ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-soft
-cp ~/Music/library/playlists/soft/*   ~/Music/library/playlists/medium-soft
+cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-soft
+cp -n ~/Music/library/playlists/soft/*   ~/Music/library/playlists/medium-soft
 
 echo "--- Recreating the playlist files ---"
 
