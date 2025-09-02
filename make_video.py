@@ -329,26 +329,38 @@ def make_video(mp3_path, filename):
     character_width = 74
     font_size = 24#max(18, int(48 - len(lines)))
 
+    print("RAW: " + lyrics)
     if lyrics:
+        print("Doing lyrics")
         # Clean and wrap lyrics
         lyrics = '"' + escape_ffmpeg_text(lyrics.strip()) + '"'
+        lyrics = lyrics.replace("{","[")
+        lyrics = lyrics.replace("}","]")
+        lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
+        lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
+
+        lyrics = lyrics.replace("[","")
+        lyrics = lyrics.replace("]","")
+        #lyrics = re.sub("[\(\[].*?[\)\]]", "", lyrics) # remove [verse] (x2) (Ooh!) etc.
+        lyrics = lyrics.strip()
         wrapped = textwrap.wrap(lyrics.strip(), width=character_width)
         lines = wrapped#[:12]
         final_text = "\n".join(lines)
 
         num_lines = len(lines) + 1
-        height = num_lines*32
+        height = num_lines*33
 
         vf_filters = []
-        vf_filters.append("pad=iw:ih+" + str(height) + ":0:0:black")
+        #vf_filters.append("pad=iw:ih+" + str(height) + ":0:0:black")
+        vf_filters.append(f"pad=iw:ih+{height}:0:0:black")
 
         # FFmpeg escaping: backslashes, single quotes, newlines
-        safe_text = escape_ffmpeg_text(final_text)
+        safe_text = escape_ffmpeg_text(final_text.replace("  "," "))
 
         safe_text = filename.center(character_width, u'\xa0') + "\n" + safe_text
 
 
-        print(safe_text)
+        print("CLEANED:", safe_text)
         print("Character count: ", len(safe_text))
 
 
@@ -365,6 +377,9 @@ def make_video(mp3_path, filename):
         )
 
         vf_filters.append(drawtext)
+
+        vf_filters.append("scale=trunc(iw/2)*2:trunc(ih/2)*2")
+
 
     vf_arg = ",".join(vf_filters)
 

@@ -6,7 +6,7 @@ RECENT_DIR="/home/crclayton/Music/library/recently_added/"
 SONG_DIR="/home/crclayton/Music/library/random_songs"
 NEW_DIR="/home/crclayton/Music/library/random_new"
 
-NUM_SONGS=100
+NUM_SONGS=500
 
 # Create the destination directory if it doesn't exist
 mkdir -p "$SONG_DIR"
@@ -34,6 +34,10 @@ for i in $(seq 1 "$NUM_SONGS"); do
 done
 
 echo "Successfully copied $NUM_SONGS random mp3 files to $SONG_DIR"
+
+
+
+
 
 # Find all mp3 files and store them in an array
 mp3_files=($(find $RECENT_DIR -type f -iname "*.mp3"))
