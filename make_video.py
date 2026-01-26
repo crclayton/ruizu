@@ -290,11 +290,13 @@ import textwrap
 import re
 
 def escape_ffmpeg_text(text):
+    print("before", text)
     text = text.replace('\\', '\\\\')  # must come first
     text = text.replace("'", "")
     text = text.replace("  ", " ")
     #text = text.replace('\n', r'\n')
     text = re.sub(r'([:=%!?#])', r'\\\1', text)  # escape : = % ! ? #
+    print("after", text)
     return text
 
 def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
@@ -322,45 +324,71 @@ def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
 def make_video(mp3_path, filename):
     lyrics = get_lyrics()
 
-
+    print(filename)
 
     # Add 400px black padding below image
 
-    character_width = 74
+    character_width = 72
     font_size = 24#max(18, int(48 - len(lines)))
+    row_height = 32.75
 
     print("RAW: " + lyrics)
     if lyrics:
         print("Doing lyrics")
         # Clean and wrap lyrics
-        lyrics = '"' + escape_ffmpeg_text(lyrics.strip()) + '"'
+        lyrics = escape_ffmpeg_text(lyrics.strip())
         lyrics = lyrics.replace("{","[")
         lyrics = lyrics.replace("}","]")
         lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
         lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
 
+        #lyrics = lyrics.replace("'","")
+        #lyrics = lyrics.replace(",","")
+        #lyrics = lyrics.replace("?","")
+        lyrics = lyrics.replace("F*ck","fuck")
+        lyrics = lyrics.replace("F**k","fuck")
+        lyrics = lyrics.replace("F***","fuck")
+
+        lyrics = lyrics.replace("f*ck","fuck")
+        lyrics = lyrics.replace("f**k","fuck")
+        lyrics = lyrics.replace("f***","fuck")
+        lyrics = lyrics.replace(" , ",", ")
+        lyrics = lyrics.replace(" . ",". ")
+        lyrics = lyrics.replace("\"","")
+        lyrics = lyrics.replace("\"","")
         lyrics = lyrics.replace("[","")
         lyrics = lyrics.replace("]","")
+        lyrics = lyrics.replace("  "," ")
+        lyrics = lyrics.replace("  "," ")
         #lyrics = re.sub("[\(\[].*?[\)\]]", "", lyrics) # remove [verse] (x2) (Ooh!) etc.
         lyrics = lyrics.strip()
+        lyrics = '"' + lyrics + '"'
+        lyrics = lyrics.replace(". \"",".")
+
         wrapped = textwrap.wrap(lyrics.strip(), width=character_width)
         lines = wrapped#[:12]
         final_text = "\n".join(lines)
 
         num_lines = len(lines) + 1
-        height = num_lines*33
+        height = num_lines*row_height+8
+
+
+
+        # FFmpeg escaping: backslashes, single quotes, newlines
+        safe_text = escape_ffmpeg_text(final_text.replace("  "," "))
+
+        title = "\n".join(l.center(character_width, u'\xa0') for l in textwrap.wrap(escape_ffmpeg_text(filename)))
+
+        if "\n" in title:
+            height += row_height
+
+        safe_text = title + "\n" + safe_text
 
         vf_filters = []
         #vf_filters.append("pad=iw:ih+" + str(height) + ":0:0:black")
         vf_filters.append(f"pad=iw:ih+{height}:0:0:black")
 
-        # FFmpeg escaping: backslashes, single quotes, newlines
-        safe_text = escape_ffmpeg_text(final_text.replace("  "," "))
-
-        safe_text = filename.center(character_width, u'\xa0') + "\n" + safe_text
-
-
-        print("CLEANED:", safe_text)
+        print("CLEANED:\n", safe_text)
         print("Character count: ", len(safe_text))
 
 
@@ -383,7 +411,10 @@ def make_video(mp3_path, filename):
 
     vf_arg = ",".join(vf_filters)
 
-    subprocess.run([
+    print(filename)
+
+    filename = filename.replace("/","")
+    cmd = [
         'ffmpeg', '-y',
         '-loop', '1', '-i', 'cover_1080.jpg',
         '-i', mp3_path,
@@ -391,7 +422,11 @@ def make_video(mp3_path, filename):
         '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
         '-pix_fmt', 'yuvj420p', '-shortest',
         filename + '.mp4'
-    ], check=True)
+    ]
+
+    print("COMMAND: " + " ".join(cmd))
+
+    subprocess.run(cmd, check=True)
 
 
 def main():
@@ -401,14 +436,14 @@ def main():
     #mp3 = sys.argv[1]
 
     meta = get_metadata(mp3)
-    parts = [meta['genre'], meta['year'], meta['location']]
+    parts = [meta['genre'], meta['location'], meta['year']]
     bracket = ', '.join([p for p in parts if p])
     info = f"{meta['artist']} - \"{meta['title']}\" [{bracket}]"
     print(info)
 
     extract_cover(mp3)
     normalize_cover('cover.jpg', 'cover_1080.jpg')  # 👈 added step
-    make_video(mp3, meta['artist'] + " - " + meta['title']) #+ '"' + ", " + str(meta['year']))
+    make_video(mp3, meta['artist'] + " - " + meta['title'].replace("/","")) #+ '"' + ", " + str(meta['year']))
     print("⇨ out.mp4 created")
     print(info)
     webbrowser.open("https://old.reddit.com/r/punk/submit/?title=" + info)

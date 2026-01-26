@@ -98,8 +98,8 @@ def copy_with_fuzzy(src_root, dest_dir, raw_names, lib_dir):
                 print(f"⚠ {raw} - {match}: already exists, skipped")
         else:
             print(f"✗ {raw}: NO MATCH")
-            with open("misses.txt","rb") as f:
-                f.writeline(raw)
+            with open("misses.txt","w") as f:
+                f.writelines(raw)
 
 if __name__ == "__main__":
     # map each playlist to a difficulty folder

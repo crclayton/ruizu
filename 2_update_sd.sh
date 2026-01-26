@@ -20,15 +20,15 @@ python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
 
 echo "--- Creating Liked Folder from playlists ---"
 
-cp -n ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
-cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
-cp -n ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
+cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
+cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
+cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
 
-cp -n ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
-cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
+cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
+cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
 
-cp -n ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-soft
-cp -n ~/Music/library/playlists/soft/*   ~/Music/library/playlists/medium-soft
+cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-soft
+cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/playlists/medium-soft
 
 echo "--- Recreating the playlist files ---"
 
