@@ -69,6 +69,13 @@ python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
 
+cd ~/Music/library/playlists/soft/
+ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+cd ~/Music/library/playlists/medium/
+ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+cd ~/Music/library/playlists/hard/
+ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+
 mv soft.xspf   soft.backup
 mv medium.xspf medium.backup
 mv hard.xspf   hard.backup

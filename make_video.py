@@ -23,6 +23,40 @@ import sys
 import urllib.parse
 from mutagen import File as MutagenFile
 
+def ffprobe_float(args):
+    out = subprocess.check_output(args, stderr=subprocess.DEVNULL).decode().strip()
+    try:
+        return float(out)
+    except Exception:
+        return None
+
+def probe_duration_seconds(path):
+    # format duration is usually most reliable across containers/codecs
+    return ffprobe_float([
+        'ffprobe', '-v', 'error',
+        '-show_entries', 'format=duration',
+        '-of', 'default=nokey=1:noprint_wrappers=1',
+        path
+    ]) or 0.0
+
+def probe_video_dims(path):
+    out = subprocess.check_output([
+        'ffprobe', '-v', 'error',
+        '-select_streams', 'v:0',
+        '-show_entries', 'stream=width,height',
+        '-of', 'csv=p=0',
+        path
+    ], stderr=subprocess.DEVNULL).decode().strip()
+    w, h = out.split(',')
+    return int(w), int(h)
+
+def estimate_char_width_for_video(video_w, font_size, margin_px=80):
+    # Monospace glyph is roughly ~0.60 * fontsize wide for DejaVuSansMono
+    approx_glyph_w = max(1.0, font_size * 0.60)
+    usable = max(200, video_w - margin_px)  # keep sane minimum
+    return max(20, int(usable / approx_glyph_w))
+
+
 def get_current_mp3_blah():
     # 1) Get Strawberry window title
     try:
@@ -321,7 +355,7 @@ def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
 
 
 
-def make_video(mp3_path, filename):
+def make_video(mp3_path, filename, bg_video=None):
     lyrics = get_lyrics()
 
     print(filename)
@@ -329,8 +363,12 @@ def make_video(mp3_path, filename):
     # Add 400px black padding below image
 
     character_width = 72
-    font_size = 24#max(18, int(48 - len(lines)))
+    #font_size = 24#max(18, int(48 - len(lines)))
     row_height = 32.75
+
+    font_size = 24
+
+
 
     print("RAW: " + lyrics)
     if lyrics:
@@ -339,6 +377,7 @@ def make_video(mp3_path, filename):
         lyrics = escape_ffmpeg_text(lyrics.strip())
         lyrics = lyrics.replace("{","[")
         lyrics = lyrics.replace("}","]")
+
         lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
         lyrics = re.sub(r"[\(\[].*?[\)\]]", "", lyrics)
 
@@ -414,15 +453,30 @@ def make_video(mp3_path, filename):
     print(filename)
 
     filename = filename.replace("/","")
-    cmd = [
-        'ffmpeg', '-y',
-        '-loop', '1', '-i', 'cover_1080.jpg',
-        '-i', mp3_path,
-        '-vf', vf_arg,
-        '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
-        '-pix_fmt', 'yuvj420p', '-shortest',
-        filename + '.mp4'
-    ]
+
+    # -stream loop -1
+
+    if bg_video:
+        cmd = [
+            'ffmpeg', '-y',
+           '-i', bg_video,
+           #'-i', mp3_path,
+            '-vf', vf_arg,
+            '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
+            '-pix_fmt', 'yuvj420p', '-shortest',
+            filename + '.mp4'
+        ]
+    else:
+
+        cmd = [
+            'ffmpeg', '-y',
+            '-loop', '1', '-i', 'cover_1080.jpg',
+            '-i', mp3_path,
+            '-vf', vf_arg,
+            '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
+            '-pix_fmt', 'yuvj420p', '-shortest',
+            filename + '.mp4'
+        ]
 
     print("COMMAND: " + " ".join(cmd))
 
@@ -443,7 +497,17 @@ def main():
 
     extract_cover(mp3)
     normalize_cover('cover.jpg', 'cover_1080.jpg')  # 👈 added step
-    make_video(mp3, meta['artist'] + " - " + meta['title'].replace("/","")) #+ '"' + ", " + str(meta['year']))
+
+    bg_video = sys.argv[1] if len(sys.argv) > 1 else None
+
+    suffix = ""
+    if bg_video:
+        pass
+        #suffix = " - viz"
+
+    make_video(mp3, meta['artist'] + " - " + meta['title'].replace("/","") + suffix, bg_video=bg_video) #+ '"' + ", " + str(meta['year']))
+
+
     print("⇨ out.mp4 created")
     print(info)
     webbrowser.open("https://old.reddit.com/r/punk/submit/?title=" + info)
