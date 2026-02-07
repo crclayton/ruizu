@@ -69,12 +69,15 @@ python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
 
+
+rm ~/Music/library/playlists/new_liked/* -rf
 cd ~/Music/library/playlists/soft/
 ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
 cd ~/Music/library/playlists/medium/
 ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
 cd ~/Music/library/playlists/hard/
 ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+cd ~/Music
 
 mv soft.xspf   soft.backup
 mv medium.xspf medium.backup
@@ -91,15 +94,16 @@ echo "--- Running detox ---"
 echo ""
 
 # encode correct
-detox library/ -r -v
+detox ~/Music/library/ -r -v
 
 # remove track numbers from playlists
-for f in ~/Music/library/playlists/soft/*.mp3; do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -n -- "$f" "$d/$b"; done
-for f in ~/Music/library/playlists/medium/*.mp3; do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -n -- "$f" "$d/$b"; done
-for f in ~/Music/library/playlists/hard/*.mp3; do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -n -- "$f" "$d/$b"; done
+for f in ~/Music/library/playlists/soft/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
+for f in ~/Music/library/playlists/medium/*.mp3; do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
+for f in ~/Music/library/playlists/hard/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
+for f in ~/Music/library/playlists/liked/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
 
 echo ""
-echo "--- Track count: $(find library/ -type f -name "*.mp3"  | wc -l) ---"
+echo "--- Track count: $(find ~/Music/library/ -type f -name "*.mp3"  | wc -l) ---"
 echo ""
 
 

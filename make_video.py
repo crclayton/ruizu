@@ -333,23 +333,23 @@ def escape_ffmpeg_text(text):
     print("after", text)
     return text
 
-def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
+def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_960.jpg'):
     subprocess.run([
         'ffmpeg', '-y',
         '-i', input_jpg,
         '-vf',
-        'scale=iw*min(1080/iw\\,1080/ih):ih*min(1080/iw\\,1080/ih):flags=lanczos,'
-        'pad=1080:1080:(1080-iw*min(1080/iw\\,1080/ih))/2:(1080-ih*min(1080/iw\\,1080/ih))/2:black',
+        'scale=iw*min(960/iw\\,960/ih):ih*min(960/iw\\,960/ih):flags=lanczos,'
+        'pad=960:960:(960-iw*min(960/iw\\,960/ih))/2:(960-ih*min(960/iw\\,960/ih))/2:black',
         output_jpg
     ], check=True)
 
 
-def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_1080.jpg'):
+def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_960.jpg'):
     subprocess.run([
         'ffmpeg', '-y',
         '-i', input_jpg,
         '-vf',
-        'scale=1080:-1:flags=lanczos,pad=1080:1080:(ow-iw)/2:(oh-ih)/2:black',
+        'scale=960:-1:flags=lanczos,pad=960:960:(ow-iw)/2:(oh-ih)/2:black',
         output_jpg
     ], check=True)
 
@@ -362,12 +362,13 @@ def make_video(mp3_path, filename, bg_video=None):
 
     # Add 400px black padding below image
 
-    character_width = 72
+    character_width = 70 #int(72*960/1080)
     #font_size = 24#max(18, int(48 - len(lines)))
-    row_height = 32.75
+    row_height = 30.5 #int(32.75*960/1080)
 
-    font_size = 24
+    font_size = 22 #int(24*960/1080)
 
+    padding_below_album_art = 10
 
 
     print("RAW: " + lyrics)
@@ -409,7 +410,7 @@ def make_video(mp3_path, filename, bg_video=None):
         final_text = "\n".join(lines)
 
         num_lines = len(lines) + 1
-        height = num_lines*row_height+8
+        height = num_lines*row_height + padding_below_album_art
 
 
 
@@ -440,7 +441,7 @@ def make_video(mp3_path, filename, bg_video=None):
             "fontcolor=#FFB343:fontsize={}:".format(font_size) +
             "borderw=1.5:bordercolor=black:"
             "line_spacing=4:"
-            "x=(w-text_w)/2:y=h-" + str(int(height)-10)
+            "x=(w-text_w)/2:y=h-" + str(int(height)-padding_below_album_art)
         )
 
         vf_filters.append(drawtext)
@@ -457,20 +458,179 @@ def make_video(mp3_path, filename, bg_video=None):
     # -stream loop -1
 
     if bg_video:
+        #cmd = [
+        #    'ffmpeg', '-y',
+        #   '-i', bg_video,
+        #   #'-i', mp3_path,
+        #    '-vf', vf_arg,
+        #    '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
+        #    '-pix_fmt', 'yuvj420p', '-shortest',
+        #    filename + '.mp4'
+        #]
+
+
+        xfade_fps = 25
+
+        hold_seconds = 5
+        fade_in_seconds  = 20
+        fade_out_seconds = 20   # video -> image
+        end_hold_seconds = 5    # image only at the very end
+
+        # choose a common fps for the crossfade (match your typical output; 30 is fine too)
+        xfade_fps = 25
+
+        v_dur = probe_duration_seconds(bg_video)  # use your existing ffprobe helper
+        fade_out_offset = max(0.0, v_dur - (fade_out_seconds + end_hold_seconds))
+
+
+
+        filter_complex = (
+            # --- COVER IMAGE path (input 0) ---
+            # Normalize: fps/size/SAR/timebase/pixfmt so xfade can work reliably.
+            f"[0:v]"
+            f"fps={xfade_fps},"
+            f"scale=960:960:force_original_aspect_ratio=decrease,"
+            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,"
+            f"settb=1/1000,"
+            f"format=rgba,"
+            f"split=2[img1][img2];"  # we need the image twice: once to fade IN, once to fade OUT
+
+            ### --- BG VIDEO path (input 1) ---
+            ### Normalize to match image stream exactly (same fps/size/SAR/timebase/pixfmt).
+            ##f"[1:v]"
+            ##f"fps={xfade_fps},"
+            ##f"scale=960:960:force_original_aspect_ratio=decrease,"
+            ##f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+            ##f"setsar=1,"
+            ##f"settb=1/1000,"
+            ##f"format=rgba[vid];"
+
+            # --- BG VIDEO path (input 1) ---
+            # 1) Drop the first `hold_seconds` of VIDEO so when the fade starts,
+            #    the video matches the audio timeline (we were hiding those seconds anyway).
+            # 2) Reset timestamps.
+            # 3) Normalize to match the image (fps/size/SAR/timebase/pixfmt).
+            # 4) Pad the end by `hold_seconds` so the output video isn’t shorter than the audio.
+            f"[1:v]"
+            f"trim=start={hold_seconds},"
+            f"setpts=PTS-STARTPTS,"
+            f"fps={xfade_fps},"
+            f"scale=960:960:force_original_aspect_ratio=decrease,"
+            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,"
+            f"settb=1/1000,"
+            f"format=rgba,"
+            f"tpad=stop_mode=clone:stop_duration={hold_seconds}"
+            f"[vid];"
+
+
+
+
+
+
+            # --- FADE IN (image -> video) ---
+            # Hold image for `hold_seconds`, then crossfade to the video over `fade_in_seconds`.
+            f"[img1][vid]"
+            f"xfade=transition=fade:"
+            f"duration={fade_in_seconds}:"
+            f"offset={hold_seconds}"
+            f"[mix1];"
+
+            # --- FADE OUT (video -> image) ---
+            # Start the fade-out at: video_duration - (fade_out_seconds + end_hold_seconds)
+            # So the final `end_hold_seconds` are fully the image.
+            f"[mix1][img2]"
+            f"xfade=transition=fade:"
+            f"duration={fade_out_seconds}:"
+            f"offset={fade_out_offset},"
+            f"format=yuv420p"
+            f"{',' + vf_arg if vf_arg else ''}"
+            f"[v]"
+        )
+
+
+        ##filter_complex = (
+        ##    # --- Normalize the still image (cover art) ---
+        ##    # 1) Force a fixed fps so xfade has a stable timebase
+        ##    # 2) Scale + pad to a known geometry (960x960 here)
+        ##    # 3) Reset SAR and timebase
+        ##    # 4) Convert to RGBA (xfade requirement)
+        ##    f"[0:v]"
+        ##    f"fps={xfade_fps},"
+        ##    f"scale=960:960:force_original_aspect_ratio=decrease,"
+        ##    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+        ##    f"setsar=1,"
+        ##    f"settb=1/1000,"
+        ##    f"format=rgba"
+        ##    f"[img];"
+
+        ##    # --- Normalize the background video ---
+        ##    # Match *exactly* the same fps, geometry, SAR, and timebase
+        ##    f"[1:v]"
+        ##    f"fps={xfade_fps},"
+        ##    f"scale=960:960:force_original_aspect_ratio=decrease,"
+        ##    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+        ##    f"setsar=1,"
+        ##    f"settb=1/1000,"
+        ##    f"format=rgba"
+        ##    f"[vid];"
+
+        ##    # --- Crossfade ---
+        ##    # offset = time (seconds) when the fade STARTS
+        ##    # duration = how long the fade lasts
+        ##    f"[img][vid]"
+        ##    f"xfade=transition=fade:"
+        ##    f"duration={fade_seconds}:"
+        ##    f"offset={hold_seconds},"
+        ##    f"format=yuv420p"
+
+        ##    # --- Apply your existing video filter chain (lyrics, overlays, etc) ---
+        ##    f",{vf_arg}"
+        ##    f"[v]"
+        ##)
+
+
+
+        #filter_complex = (
+        #    # Normalize cover image stream
+        #    f"[0:v]fps={xfade_fps},scale=960:960:force_original_aspect_ratio=decrease,"
+        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,setsar=1,settb=1/1000,format=rgba[img];"
+
+        #    # Normalize bg video stream to same fps/size/timebase
+        #    f"[1:v]fps={xfade_fps},scale=960:960:force_original_aspect_ratio=decrease,"
+        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,setsar=1,settb=1/1000,format=rgba[vid];"
+
+        #    # Crossfade: start at t=0, fade lasts 10 seconds
+        #    f"[img][vid]xfade=transition=fade:duration={fade_seconds}:offset=0,format=yuv420p"
+
+        #    # Then apply your existing filter chain (drawtext etc)
+        #    f",{vf_arg}[v]"
+        #)
+
         cmd = [
-            'ffmpeg', '-y',
-           '-i', bg_video,
-           #'-i', mp3_path,
-            '-vf', vf_arg,
-            '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
-            '-pix_fmt', 'yuvj420p', '-shortest',
-            filename + '.mp4'
+            "ffmpeg", "-y",
+            "-loop", "1", "-i", "cover_960.jpg",
+            "-i", bg_video,
+            "-filter_complex", filter_complex,
+            "-map", "[v]",
+            "-map", "1:a:0",          # audio from bg_video
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-b:a", "0",
+            "-pix_fmt", "yuv420p",
+            "-shortest",
+            filename + ".mp4",
         ]
+
+
+
+
     else:
 
         cmd = [
             'ffmpeg', '-y',
-            '-loop', '1', '-i', 'cover_1080.jpg',
+            '-loop', '1', '-i', 'cover_960.jpg',
             '-i', mp3_path,
             '-vf', vf_arg,
             '-c:v', 'libx264', '-c:a', 'aac', '-b:a', '0',
@@ -496,7 +656,7 @@ def main():
     print(info)
 
     extract_cover(mp3)
-    normalize_cover('cover.jpg', 'cover_1080.jpg')  # 👈 added step
+    normalize_cover('cover.jpg', 'cover_960.jpg')  # 👈 added step
 
     bg_video = sys.argv[1] if len(sys.argv) > 1 else None
 
