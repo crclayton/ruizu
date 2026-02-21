@@ -33,23 +33,32 @@ def parse_xspf(xspf_path):
         #path = urllib.parse.unquote(parsed.path)
         #yield path
 
+from pathlib import Path
+import shutil
+from urllib.parse import unquote
+
 def copy_files(file_paths, dest_dir):
     """
     Copy each file in file_paths into dest_dir.
     """
     dest = Path(dest_dir)
     dest.mkdir(parents=True, exist_ok=True)
+
     for src in file_paths:
+        src = unquote(src)  # <-- decode %25, %20, etc.
         src_path = Path(src)
+
         if "/playlists/" in str(src_path):
-            #print("Already in playlists: " + str(src_path))
             continue
+
         if src_path.exists():
             target = dest / src_path.name
             shutil.copy2(src_path, target)
             print(f"Copied: {src_path} -> {target}")
         else:
             print(f"File not found, skipping: {src_path}")
+
+
 
 def main():
     parser = argparse.ArgumentParser(

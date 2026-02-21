@@ -362,11 +362,11 @@ def make_video(mp3_path, filename, bg_video=None):
 
     # Add 400px black padding below image
 
-    character_width = 70 #int(72*960/1080)
+    character_width = 62 #int(72*960/1080)
     #font_size = 24#max(18, int(48 - len(lines)))
-    row_height = 30.5 #int(32.75*960/1080)
+    row_height = 33.3 # 33.2 # was 33.1 #int(32.75*960/1080)
 
-    font_size = 22 #int(24*960/1080)
+    font_size = 25 #int(24*960/1080)
 
     padding_below_album_art = 10
 
@@ -376,6 +376,7 @@ def make_video(mp3_path, filename, bg_video=None):
         print("Doing lyrics")
         # Clean and wrap lyrics
         lyrics = escape_ffmpeg_text(lyrics.strip())
+        lyrics = lyrics.replace("%","\%")
         lyrics = lyrics.replace("{","[")
         lyrics = lyrics.replace("}","]")
 
@@ -423,6 +424,7 @@ def make_video(mp3_path, filename, bg_video=None):
             height += row_height
 
         safe_text = title + "\n" + safe_text
+        safe_text = safe_text.replace("%","\\\\%")
 
         vf_filters = []
         #vf_filters.append("pad=iw:ih+" + str(height) + ":0:0:black")
@@ -454,7 +456,8 @@ def make_video(mp3_path, filename, bg_video=None):
     print(filename)
 
     filename = filename.replace("/","")
-
+    
+    print(filename)
     # -stream loop -1
 
     if bg_video:
@@ -467,6 +470,11 @@ def make_video(mp3_path, filename, bg_video=None):
         #    '-pix_fmt', 'yuvj420p', '-shortest',
         #    filename + '.mp4'
         #]
+
+        mid_fade_to_img_seconds = 20
+        mid_hold_img_seconds    = 10
+        mid_fade_back_seconds   = 20
+
 
 
         xfade_fps = 25
@@ -482,6 +490,9 @@ def make_video(mp3_path, filename, bg_video=None):
         v_dur = probe_duration_seconds(bg_video)  # use your existing ffprobe helper
         fade_out_offset = max(0.0, v_dur - (fade_out_seconds + end_hold_seconds))
 
+        mid_block = mid_fade_to_img_seconds + mid_hold_img_seconds + mid_fade_back_seconds
+        mid_to_img_offset = max(0.0, (fade_out_offset / 2.0) - (mid_block / 2.0))
+        mid_back_offset   = mid_to_img_offset + mid_fade_to_img_seconds + mid_hold_img_seconds
 
 
         filter_complex = (
@@ -495,16 +506,6 @@ def make_video(mp3_path, filename, bg_video=None):
             f"settb=1/1000,"
             f"format=rgba,"
             f"split=2[img1][img2];"  # we need the image twice: once to fade IN, once to fade OUT
-
-            ### --- BG VIDEO path (input 1) ---
-            ### Normalize to match image stream exactly (same fps/size/SAR/timebase/pixfmt).
-            ##f"[1:v]"
-            ##f"fps={xfade_fps},"
-            ##f"scale=960:960:force_original_aspect_ratio=decrease,"
-            ##f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
-            ##f"setsar=1,"
-            ##f"settb=1/1000,"
-            ##f"format=rgba[vid];"
 
             # --- BG VIDEO path (input 1) ---
             # 1) Drop the first `hold_seconds` of VIDEO so when the fade starts,
@@ -523,11 +524,6 @@ def make_video(mp3_path, filename, bg_video=None):
             f"format=rgba,"
             f"tpad=stop_mode=clone:stop_duration={hold_seconds}"
             f"[vid];"
-
-
-
-
-
 
             # --- FADE IN (image -> video) ---
             # Hold image for `hold_seconds`, then crossfade to the video over `fade_in_seconds`.
@@ -549,65 +545,6 @@ def make_video(mp3_path, filename, bg_video=None):
             f"[v]"
         )
 
-
-        ##filter_complex = (
-        ##    # --- Normalize the still image (cover art) ---
-        ##    # 1) Force a fixed fps so xfade has a stable timebase
-        ##    # 2) Scale + pad to a known geometry (960x960 here)
-        ##    # 3) Reset SAR and timebase
-        ##    # 4) Convert to RGBA (xfade requirement)
-        ##    f"[0:v]"
-        ##    f"fps={xfade_fps},"
-        ##    f"scale=960:960:force_original_aspect_ratio=decrease,"
-        ##    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
-        ##    f"setsar=1,"
-        ##    f"settb=1/1000,"
-        ##    f"format=rgba"
-        ##    f"[img];"
-
-        ##    # --- Normalize the background video ---
-        ##    # Match *exactly* the same fps, geometry, SAR, and timebase
-        ##    f"[1:v]"
-        ##    f"fps={xfade_fps},"
-        ##    f"scale=960:960:force_original_aspect_ratio=decrease,"
-        ##    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
-        ##    f"setsar=1,"
-        ##    f"settb=1/1000,"
-        ##    f"format=rgba"
-        ##    f"[vid];"
-
-        ##    # --- Crossfade ---
-        ##    # offset = time (seconds) when the fade STARTS
-        ##    # duration = how long the fade lasts
-        ##    f"[img][vid]"
-        ##    f"xfade=transition=fade:"
-        ##    f"duration={fade_seconds}:"
-        ##    f"offset={hold_seconds},"
-        ##    f"format=yuv420p"
-
-        ##    # --- Apply your existing video filter chain (lyrics, overlays, etc) ---
-        ##    f",{vf_arg}"
-        ##    f"[v]"
-        ##)
-
-
-
-        #filter_complex = (
-        #    # Normalize cover image stream
-        #    f"[0:v]fps={xfade_fps},scale=960:960:force_original_aspect_ratio=decrease,"
-        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,setsar=1,settb=1/1000,format=rgba[img];"
-
-        #    # Normalize bg video stream to same fps/size/timebase
-        #    f"[1:v]fps={xfade_fps},scale=960:960:force_original_aspect_ratio=decrease,"
-        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,setsar=1,settb=1/1000,format=rgba[vid];"
-
-        #    # Crossfade: start at t=0, fade lasts 10 seconds
-        #    f"[img][vid]xfade=transition=fade:duration={fade_seconds}:offset=0,format=yuv420p"
-
-        #    # Then apply your existing filter chain (drawtext etc)
-        #    f",{vf_arg}[v]"
-        #)
-
         cmd = [
             "ffmpeg", "-y",
             "-loop", "1", "-i", "cover_960.jpg",
@@ -622,6 +559,61 @@ def make_video(mp3_path, filename, bg_video=None):
             "-shortest",
             filename + ".mp4",
         ]
+
+        filter_complex = (
+            # --- COVER IMAGE path (input 0) ---
+            f"[0:v]"
+            f"fps={xfade_fps},"
+            f"scale=960:960:force_original_aspect_ratio=decrease,"
+            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,"
+            f"settb=1/1000,"
+            f"format=rgba,"
+            f"split=3[img_start][img_end][img_mid];"
+
+            # --- BG VIDEO path (input 1) ---
+            f"[1:v]"
+            f"trim=start={hold_seconds},"
+            f"setpts=PTS-STARTPTS,"
+            f"fps={xfade_fps},"
+            f"scale=960:960:force_original_aspect_ratio=decrease,"
+            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,"
+            f"settb=1/1000,"
+            f"format=rgba,"
+            f"tpad=stop_mode=clone:stop_duration={hold_seconds},"
+            f"split=2[vid_a][vid_b];"
+
+            # 1) --- FADE IN (image -> video) ---
+            f"[img_start][vid_a]"
+            f"xfade=transition=fade:"
+            f"duration={fade_in_seconds}:"
+            f"offset={hold_seconds}"
+            f"[mix1];"
+
+            # 2) --- MID FADE (video -> image) ---
+            f"[mix1][img_mid]"
+            f"xfade=transition=fade:"
+            f"duration={mid_fade_to_img_seconds}:"
+            f"offset={mid_to_img_offset}"
+            f"[mix2];"
+
+            # 3) --- MID FADE BACK (image -> video) ---
+            f"[mix2][vid_b]"
+            f"xfade=transition=fade:"
+            f"duration={mid_fade_back_seconds}:"
+            f"offset={mid_back_offset}"
+            f"[mix3];"
+
+            # 4) --- FADE OUT (video -> image) ---
+            f"[mix3][img_end]"
+            f"xfade=transition=fade:"
+            f"duration={fade_out_seconds}:"
+            f"offset={fade_out_offset},"
+            f"format=yuv420p"
+            f"{',' + vf_arg if vf_arg else ''}"
+            f"[v]"
+        )
 
 
 
@@ -670,6 +662,7 @@ def main():
 
     print("⇨ out.mp4 created")
     print(info)
+    info = info.replace("&","%26")
     webbrowser.open("https://old.reddit.com/r/punk/submit/?title=" + info)
 
 if __name__ == '__main__':

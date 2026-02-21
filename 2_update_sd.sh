@@ -20,9 +20,9 @@ python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
 
 echo "--- Creating Liked Folder from playlists ---"
 
-cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/playlists/liked
-cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/liked
-cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/playlists/liked
+cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/liked
+cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/liked
+cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/liked
 
 cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
 cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
@@ -32,7 +32,7 @@ cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/playlists/me
 
 echo "--- Recreating the playlist files ---"
 
-python3 sync_xspf.py library/playlists/liked/  -o liked.xspf
+python3 sync_xspf.py library/liked/  -o liked.xspf
 
 # update to SD card
 #rm /media/crclayton/7C3F-6B90/* -rf

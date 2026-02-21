@@ -51,14 +51,8 @@ echo "--- Copying into folder ---"
 
 #find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
 
-echo ""
-echo "--- Creating random playlists ---"
-echo ""
 
-# create new shuffle playlist
-bash update_random.sh
 
-python3 move_random.py --count 10
 
 echo ""
 echo "--- Copying strawberry playlists to folders ---"
@@ -69,14 +63,22 @@ python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
 
+rm ~/Music/library/playlists/new_liked/* -rf
+rm ~/Music/library/new_liked/* -rf
 
 rm ~/Music/library/playlists/new_liked/* -rf
+rm ~/Music/library/playlists/new_soft/* -rf
+rm ~/Music/library/playlists/new_medium/* -rf
+rm ~/Music/library/playlists/new_hard/* -rf
 cd ~/Music/library/playlists/soft/
-ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_soft/
 cd ~/Music/library/playlists/medium/
-ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_medium/
 cd ~/Music/library/playlists/hard/
-ls * -t | head -n 25 | xargs -I {} cp "{}" ../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_hard/
 cd ~/Music
 
 mv soft.xspf   soft.backup
@@ -87,7 +89,17 @@ mv hard.xspf   hard.backup
 python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
 python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
 python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
-python3 sync_xspf.py library/playlists/liked/  -o liked.xspf
+python3 sync_xspf.py library/liked/  -o liked.xspf
+
+
+echo ""
+echo "--- Creating random playlists ---"
+echo ""
+
+# create new shuffle playlist
+bash update_random.sh
+
+python3 move_random.py --count 5
 
 echo ""
 echo "--- Running detox ---"
@@ -97,10 +109,8 @@ echo ""
 detox ~/Music/library/ -r -v
 
 # remove track numbers from playlists
-for f in ~/Music/library/playlists/soft/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
-for f in ~/Music/library/playlists/medium/*.mp3; do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
-for f in ~/Music/library/playlists/hard/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
-for f in ~/Music/library/playlists/liked/*.mp3;   do d=${f%/*}; n=${f##*/}; b=$(printf '%s\n' "$n" | sed -E 's/^[0-9]+([_-][0-9]+)?[_-]+//'); [ "$b" != "$n" ] && mv -f  -- "$f" "$d/$b"; done
+bash ~/Music/clean_names.sh ~/Music/library/playlists/soft ~/Music/library/playlists/medium ~/Music/library/playlists/hard ~/Music/library/liked ~/Music/library/new_liked
+
 
 echo ""
 echo "--- Track count: $(find ~/Music/library/ -type f -name "*.mp3"  | wc -l) ---"
