@@ -376,7 +376,7 @@ def make_video(mp3_path, filename, bg_video=None):
         print("Doing lyrics")
         # Clean and wrap lyrics
         lyrics = escape_ffmpeg_text(lyrics.strip())
-        lyrics = lyrics.replace("%","\%")
+        lyrics = lyrics.replace("%","\\%")
         lyrics = lyrics.replace("{","[")
         lyrics = lyrics.replace("}","]")
 
@@ -456,7 +456,7 @@ def make_video(mp3_path, filename, bg_video=None):
     print(filename)
 
     filename = filename.replace("/","")
-    
+
     print(filename)
     # -stream loop -1
 
@@ -545,6 +545,63 @@ def make_video(mp3_path, filename, bg_video=None):
             f"[v]"
         )
 
+
+
+        #filter_complex = (
+        #    # --- COVER IMAGE path (input 0) ---
+        #    f"[0:v]"
+        #    f"fps={xfade_fps},"
+        #    f"scale=960:960:force_original_aspect_ratio=decrease,"
+        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+        #    f"setsar=1,"
+        #    f"settb=1/1000,"
+        #    f"format=rgba,"
+        #    f"split=3[img_start][img_end][img_mid];"
+
+        #    # --- BG VIDEO path (input 1) ---
+        #    f"[1:v]"
+        #    f"trim=start={hold_seconds},"
+        #    f"setpts=PTS-STARTPTS,"
+        #    f"fps={xfade_fps},"
+        #    f"scale=960:960:force_original_aspect_ratio=decrease,"
+        #    f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
+        #    f"setsar=1,"
+        #    f"settb=1/1000,"
+        #    f"format=rgba,"
+        #    f"tpad=stop_mode=clone:stop_duration={hold_seconds},"
+        #    f"split=2[vid_a][vid_b];"
+
+        #    # 1) --- FADE IN (image -> video) ---
+        #    f"[img_start][vid_a]"
+        #    f"xfade=transition=fade:"
+        #    f"duration={fade_in_seconds}:"
+        #    f"offset={hold_seconds}"
+        #    f"[mix1];"
+
+        #    # 2) --- MID FADE (video -> image) ---
+        #    f"[mix1][img_mid]"
+        #    f"xfade=transition=fade:"
+        #    f"duration={mid_fade_to_img_seconds}:"
+        #    f"offset={mid_to_img_offset}"
+        #    f"[mix2];"
+
+        #    # 3) --- MID FADE BACK (image -> video) ---
+        #    f"[mix2][vid_b]"
+        #    f"xfade=transition=fade:"
+        #    f"duration={mid_fade_back_seconds}:"
+        #    f"offset={mid_back_offset}"
+        #    f"[mix3];"
+
+        #    # 4) --- FADE OUT (video -> image) ---
+        #    f"[mix3][img_end]"
+        #    f"xfade=transition=fade:"
+        #    f"duration={fade_out_seconds}:"
+        #    f"offset={fade_out_offset},"
+        #    f"format=yuv420p"
+        #    f"{',' + vf_arg if vf_arg else ''}"
+        #    f"[v]"
+        #)
+
         cmd = [
             "ffmpeg", "-y",
             "-loop", "1", "-i", "cover_960.jpg",
@@ -559,62 +616,6 @@ def make_video(mp3_path, filename, bg_video=None):
             "-shortest",
             filename + ".mp4",
         ]
-
-        filter_complex = (
-            # --- COVER IMAGE path (input 0) ---
-            f"[0:v]"
-            f"fps={xfade_fps},"
-            f"scale=960:960:force_original_aspect_ratio=decrease,"
-            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
-            f"setsar=1,"
-            f"settb=1/1000,"
-            f"format=rgba,"
-            f"split=3[img_start][img_end][img_mid];"
-
-            # --- BG VIDEO path (input 1) ---
-            f"[1:v]"
-            f"trim=start={hold_seconds},"
-            f"setpts=PTS-STARTPTS,"
-            f"fps={xfade_fps},"
-            f"scale=960:960:force_original_aspect_ratio=decrease,"
-            f"pad=960:960:(ow-iw)/2:(oh-ih)/2,"
-            f"setsar=1,"
-            f"settb=1/1000,"
-            f"format=rgba,"
-            f"tpad=stop_mode=clone:stop_duration={hold_seconds},"
-            f"split=2[vid_a][vid_b];"
-
-            # 1) --- FADE IN (image -> video) ---
-            f"[img_start][vid_a]"
-            f"xfade=transition=fade:"
-            f"duration={fade_in_seconds}:"
-            f"offset={hold_seconds}"
-            f"[mix1];"
-
-            # 2) --- MID FADE (video -> image) ---
-            f"[mix1][img_mid]"
-            f"xfade=transition=fade:"
-            f"duration={mid_fade_to_img_seconds}:"
-            f"offset={mid_to_img_offset}"
-            f"[mix2];"
-
-            # 3) --- MID FADE BACK (image -> video) ---
-            f"[mix2][vid_b]"
-            f"xfade=transition=fade:"
-            f"duration={mid_fade_back_seconds}:"
-            f"offset={mid_back_offset}"
-            f"[mix3];"
-
-            # 4) --- FADE OUT (video -> image) ---
-            f"[mix3][img_end]"
-            f"xfade=transition=fade:"
-            f"duration={fade_out_seconds}:"
-            f"offset={fade_out_offset},"
-            f"format=yuv420p"
-            f"{',' + vf_arg if vf_arg else ''}"
-            f"[v]"
-        )
-
 
 
 

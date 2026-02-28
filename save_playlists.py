@@ -67,8 +67,11 @@ def extract_mp3_filenames_iso88591(filepath):
     (As before) read raw bytes, decode ISO-8859-1, strip nonprintable,
     then find things ending in ‘.mp3’ via regex.
     """
-    with open(filepath, 'rb') as f:
-        data = f.read().decode('ISO-8859-1', errors='ignore')
+    try:
+        with open(filepath, 'rb') as f:
+            data = f.read().decode('ISO-8859-1', errors='ignore')
+    except FileNotFoundError:
+        return []
     # keep only ASCII-printable
     clean = ''.join(c for c in data if c.isprintable() and ord(c) < 128)
     # ensure we separate filenames

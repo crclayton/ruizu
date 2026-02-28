@@ -9,6 +9,46 @@
 #find /home/crclayton/Music/bandcamp -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
 #find /home/crclayton/Music/ytmdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
 
+
+
+echo ""
+echo "--- Copying strawberry playlists to folders ---"
+echo ""
+
+# copy files in the xspf into the folder
+python3 copy_xspf.py soft.xspf   library/playlists/soft/
+python3 copy_xspf.py medium.xspf library/playlists/medium/
+python3 copy_xspf.py hard.xspf   library/playlists/hard/
+
+rm ~/Music/library/playlists/new_liked/* -rf
+rm ~/Music/library/new_liked/* -rf
+
+rm ~/Music/library/playlists/new_liked/* -rf
+rm ~/Music/library/playlists/new_soft/* -rf
+rm ~/Music/library/playlists/new_medium/* -rf
+rm ~/Music/library/playlists/new_hard/* -rf
+cd ~/Music/library/playlists/soft/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_soft/
+cd ~/Music/library/playlists/medium/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_medium/
+cd ~/Music/library/playlists/hard/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
+ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_hard/
+cd ~/Music
+
+mv soft.xspf   soft.backup
+mv medium.xspf medium.backup
+mv hard.xspf   hard.backup
+
+# creating a new xspf from what's in the folder
+python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
+python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
+python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
+python3 sync_xspf.py library/liked/  -o liked.xspf
+
+
 echo ""
 echo "--- Starting update ---"
 echo ""
@@ -54,42 +94,7 @@ echo "--- Copying into folder ---"
 
 
 
-echo ""
-echo "--- Copying strawberry playlists to folders ---"
-echo ""
 
-# copy files in the xspf into the folder
-python3 copy_xspf.py soft.xspf   library/playlists/soft/
-python3 copy_xspf.py medium.xspf library/playlists/medium/
-python3 copy_xspf.py hard.xspf   library/playlists/hard/
-
-rm ~/Music/library/playlists/new_liked/* -rf
-rm ~/Music/library/new_liked/* -rf
-
-rm ~/Music/library/playlists/new_liked/* -rf
-rm ~/Music/library/playlists/new_soft/* -rf
-rm ~/Music/library/playlists/new_medium/* -rf
-rm ~/Music/library/playlists/new_hard/* -rf
-cd ~/Music/library/playlists/soft/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_soft/
-cd ~/Music/library/playlists/medium/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_medium/
-cd ~/Music/library/playlists/hard/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_hard/
-cd ~/Music
-
-mv soft.xspf   soft.backup
-mv medium.xspf medium.backup
-mv hard.xspf   hard.backup
-
-# creating a new xspf from what's in the folder
-python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
-python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
-python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
-python3 sync_xspf.py library/liked/  -o liked.xspf
 
 
 echo ""
@@ -97,9 +102,12 @@ echo "--- Creating random playlists ---"
 echo ""
 
 # create new shuffle playlist
-bash update_random.sh
 
+# random albums
 python3 move_random.py --count 5
+
+# random songs
+bash update_random.sh
 
 echo ""
 echo "--- Running detox ---"
@@ -109,7 +117,7 @@ echo ""
 detox ~/Music/library/ -r -v
 
 # remove track numbers from playlists
-bash ~/Music/clean_names.sh ~/Music/library/playlists/soft ~/Music/library/playlists/medium ~/Music/library/playlists/hard ~/Music/library/liked ~/Music/library/new_liked
+bash ~/Music/clean_names.sh ~/Music/library/playlists/soft ~/Music/library/playlists/medium ~/Music/library/playlists/hard ~/Music/library/liked ~/Music/library/new_liked ~/Music/library/playlists/hits
 
 
 echo ""
