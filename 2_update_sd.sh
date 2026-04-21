@@ -16,6 +16,8 @@ echo "--- Recreating the playlist files ---"
 python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
 python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
 python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
+python3 sync_xspf.py library/playlists/mixter_n_mixtus/   -o mixternmixtus.xspf
+python3 sync_xspf.py library/playlists/hits/   -o hits.xspf
 
 
 echo "--- Creating Liked Folder from playlists ---"
@@ -23,12 +25,6 @@ echo "--- Creating Liked Folder from playlists ---"
 cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/liked
 cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/liked
 cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/liked
-
-cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/playlists/medium-hard
-cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-hard
-
-cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/playlists/medium-soft
-cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/playlists/medium-soft
 
 echo "--- Recreating the playlist files ---"
 

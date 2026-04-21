@@ -4,6 +4,7 @@ import urllib.parse
 import sys
 import json
 import webbrowser
+import itertools
 
 import os
 import subprocess
@@ -324,13 +325,13 @@ import textwrap
 import re
 
 def escape_ffmpeg_text(text):
-    print("before", text)
+    #print("before", text)
     text = text.replace('\\', '\\\\')  # must come first
     text = text.replace("'", "")
     text = text.replace("  ", " ")
     #text = text.replace('\n', r'\n')
     text = re.sub(r'([:=%!?#])', r'\\\1', text)  # escape : = % ! ? #
-    print("after", text)
+    #print("after", text)
     return text
 
 def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_960.jpg'):
@@ -344,15 +345,28 @@ def normalize_cover(input_jpg='cover.jpg', output_jpg='cover_960.jpg'):
     ], check=True)
 
 
-def normalize_cover_old(input_jpg='cover.jpg', output_jpg='cover_960.jpg'):
-    subprocess.run([
-        'ffmpeg', '-y',
-        '-i', input_jpg,
-        '-vf',
-        'scale=960:-1:flags=lanczos,pad=960:960:(ow-iw)/2:(oh-ih)/2:black',
-        output_jpg
-    ], check=True)
+# Example: generate_timeline(20, 80)
 
+def generate_timeline(start_pct, end_pct, width):
+    # Map percentages to 0-61 scale
+    s = round((start_pct / 100) * (width - 1))
+    e = round((end_pct / 100) * (width - 1))
+
+    # Create empty background
+    line = list(" " * width)
+
+    # Fill inside with dashes and set markers
+    for i in range(s + 1, e): line[i] = "—" #-"
+    line[s], line[e] = "<", ">"
+
+    # Overlay label in the middle of the bracket
+    label = " sax solo "
+    mid = (s + e) // 2
+    if e - s > len(label):
+        start_txt = mid - (len(label) // 2)
+        line[start_txt : start_txt + len(label)] = list(label)
+
+    return "".join(line)
 
 
 def make_video(mp3_path, filename, bg_video=None):
@@ -362,7 +376,7 @@ def make_video(mp3_path, filename, bg_video=None):
 
     # Add 400px black padding below image
 
-    character_width = 62 #int(72*960/1080)
+    character_width = 63 #int(72*960/1080)
     #font_size = 24#max(18, int(48 - len(lines)))
     row_height = 33.3 # 33.2 # was 33.1 #int(32.75*960/1080)
 
@@ -371,10 +385,16 @@ def make_video(mp3_path, filename, bg_video=None):
     padding_below_album_art = 10
 
 
-    print("RAW: " + lyrics)
+    print("RAW:\n" + lyrics)
     if lyrics:
         print("Doing lyrics")
         # Clean and wrap lyrics
+
+        lyrics = lyrics.replace("\n\n","NEWLINE")
+        print("NEWLINES:\n", lyrics)
+
+        lyrics = lyrics.replace("\n"," ")
+        lyrics = lyrics.replace("\r"," ")
         lyrics = escape_ffmpeg_text(lyrics.strip())
         lyrics = lyrics.replace("%","\\%")
         lyrics = lyrics.replace("{","[")
@@ -406,8 +426,32 @@ def make_video(mp3_path, filename, bg_video=None):
         lyrics = '"' + lyrics + '"'
         lyrics = lyrics.replace(". \"",".")
 
-        wrapped = textwrap.wrap(lyrics.strip(), width=character_width)
-        lines = wrapped#[:12]
+
+
+        print("AFTER NEWLINES:\n", repr(lyrics))
+
+
+        lyrics = lyrics.replace("NEWLINE", "\n      ")
+
+
+        wrapped = textwrap.wrap(lyrics.strip(), width=character_width, break_long_words=True,replace_whitespace=False)
+
+        wrapper = textwrap.TextWrapper(width=character_width)
+        wrapped = [wrapper.wrap(i) for i in lyrics.split('\n') if i != '']
+        wrapped = list(itertools.chain.from_iterable(wrapped))
+
+        #lines = []
+        #lines.append(wrapped[0])
+        #for w in wrapped[1:]
+        #    lines.append(" " + w)
+
+        lines = wrapped
+
+
+        if False: #True:
+            #lines = [character_width*" "] + lines
+            lines.append(generate_timeline(60,70,character_width))
+
         final_text = "\n".join(lines)
 
         num_lines = len(lines) + 1
@@ -415,8 +459,11 @@ def make_video(mp3_path, filename, bg_video=None):
 
 
 
+        print("FINAL TEXT:\n", final_text)
         # FFmpeg escaping: backslashes, single quotes, newlines
-        safe_text = escape_ffmpeg_text(final_text.replace("  "," "))
+        safe_text = escape_ffmpeg_text(final_text) #final_text.replace("  "," "))
+
+        print("SAFE TEXT:\n", safe_text)
 
         title = "\n".join(l.center(character_width, u'\xa0') for l in textwrap.wrap(escape_ffmpeg_text(filename)))
 
@@ -479,10 +526,10 @@ def make_video(mp3_path, filename, bg_video=None):
 
         xfade_fps = 25
 
-        hold_seconds = 5
-        fade_in_seconds  = 20
-        fade_out_seconds = 20   # video -> image
-        end_hold_seconds = 5    # image only at the very end
+        hold_seconds = 1
+        fade_in_seconds  = 10
+        fade_out_seconds = 10   # video -> image
+        end_hold_seconds = 1    # image only at the very end
 
         # choose a common fps for the crossfade (match your typical output; 30 is fine too)
         xfade_fps = 25
@@ -664,7 +711,7 @@ def main():
     print("⇨ out.mp4 created")
     print(info)
     info = info.replace("&","%26")
-    webbrowser.open("https://old.reddit.com/r/punk/submit/?title=" + info)
+    webbrowser.open("https://old.reddit.com/r/postpunk/submit/?title=" + info)
 
 if __name__ == '__main__':
     main()

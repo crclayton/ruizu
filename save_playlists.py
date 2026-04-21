@@ -53,6 +53,7 @@ def find_best_match(norm_map, all_norms, query):
         val = norm_map[subs[0]]
         return val[0] if isinstance(val, list) else val
 
+
     # 3) fuzzy
     close = difflib.get_close_matches(nq, all_norms, n=1, cutoff=0.6)
     if close:
@@ -75,8 +76,8 @@ def extract_mp3_filenames_iso88591(filepath):
     # keep only ASCII-printable
     clean = ''.join(c for c in data if c.isprintable() and ord(c) < 128)
     # ensure we separate filenames
-    clean = re.sub(r'\.(?i:mp3)', '.mp3 ', clean)
-    pattern = re.compile(r'\d[\w\-\_]+\.mp3', re.IGNORECASE)
+    clean = re.sub(r'\.(?i:m)', '.', clean)
+    pattern = re.compile(r'\d[\w\-\_]+\.', re.IGNORECASE)
     return sorted({m.group(0) for m in pattern.finditer(clean)})
 
 def copy_with_fuzzy(src_root, dest_dir, raw_names, lib_dir):

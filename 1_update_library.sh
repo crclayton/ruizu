@@ -19,6 +19,9 @@ echo ""
 python3 copy_xspf.py soft.xspf   library/playlists/soft/
 python3 copy_xspf.py medium.xspf library/playlists/medium/
 python3 copy_xspf.py hard.xspf   library/playlists/hard/
+python3 copy_xspf.py liked.xspf  library/liked/
+python3 copy_xspf.py mixternmixtus.xspf   library/playlists/mixter_n_mixtus/
+python3 copy_xspf.py hits.xspf            library/playlists/hits
 
 rm ~/Music/library/playlists/new_liked/* -rf
 rm ~/Music/library/new_liked/* -rf
@@ -27,26 +30,29 @@ rm ~/Music/library/playlists/new_liked/* -rf
 rm ~/Music/library/playlists/new_soft/* -rf
 rm ~/Music/library/playlists/new_medium/* -rf
 rm ~/Music/library/playlists/new_hard/* -rf
+find ~/Music/library/playlists/soft/ ~/Music/library/playlists/medium/ ~/Music/library/playlists/hard/ -maxdepth 1 -type f -printf "%C@ %p\n" | sort -rn | head -n 30 | awk '{print $2}' | xargs -I {} cp "{}" ~/Music/library/new_liked/
 cd ~/Music/library/playlists/soft/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_soft/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_soft/
 cd ~/Music/library/playlists/medium/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_medium/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_medium/
 cd ~/Music/library/playlists/hard/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../../new_liked/
-ls * -t --time=ctime | head -n 20 | xargs -I {} cp "{}" ../new_hard/
+ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_hard/
 cd ~/Music
 
 mv soft.xspf   soft.backup
 mv medium.xspf medium.backup
 mv hard.xspf   hard.backup
+mv liked.xspf  liked.backup
+mv mixternmixtus.xspf  mixternmixtus.backup
+mv hits.xspf hits.backup
 
 # creating a new xspf from what's in the folder
 python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
 python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
 python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
-python3 sync_xspf.py library/liked/  -o liked.xspf
+python3 sync_xspf.py library/playlists/mixter_n_mixtus/   -o mixternmixtus.xspf
+python3 sync_xspf.py library/playlists/hits/   -o hits.xspf
+python3 sync_xspf.py library/liked/            -o liked.xspf
 
 
 echo ""
@@ -75,7 +81,7 @@ echo ""
 echo "--- recently created albums: ---"
 echo ""
 
-python3 move_recently_added.py --count 20
+python3 move_recently_added.py --count 12
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5
 

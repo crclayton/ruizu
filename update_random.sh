@@ -11,7 +11,7 @@ mkdir -p "$SONG_DIR"
 rm $SONG_DIR/* -rf
 
 # 500 random songs to the random songs dir
-NUM_SONGS=500
+NUM_SONGS=200
 
 # Find all mp3 files and store them in an array
 mp3_files=($(find $ORIGINAL_DIR -type f -iname "*.mp3"))
