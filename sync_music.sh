@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SOURCE_DIR=~/Music/library
+SOURCE_DIR=/home/crclayton/Music/library
 TARGET_DIR=/media/crclayton/MP3
-
+#TARGEN_DIR=/media/crclayton/0000-006F/Music
 
 rm /media/crclayton/MP3/recently_added/* -rf
 rm /media/crclayton/MP3/random_albums/* -rf
@@ -20,6 +20,11 @@ find "$SOURCE_DIR" -type f -iname "*.mp3" | sort | while read -r src_file; do
     dest_file="$TARGET_DIR/$rel_path"
 
     #echo $rel_path $dest_file
+
+    # Skip files in the genres folder
+    if [[ "$rel_path" == *genres/* ]]; then
+        continue
+    fi
 
     # Only copy if it doesn't exist
     if [ ! -f "$dest_file" ]; then

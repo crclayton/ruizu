@@ -22,9 +22,9 @@ python3 sync_xspf.py library/playlists/hits/   -o hits.xspf
 
 echo "--- Creating Liked Folder from playlists ---"
 
-cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/liked
-cp --update=none ~/Music/library/playlists/medium/* ~/Music/library/liked
-cp --update=none ~/Music/library/playlists/soft/*   ~/Music/library/liked
+#cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/liked
+cp --update=none /home/crclayton/Music/library/playlists/medium/* /home/crclayton/Music/library/liked
+cp --update=none /home/crclayton/Music/library/playlists/soft/*   /home/crclayton/Music/library/liked
 
 echo "--- Recreating the playlist files ---"
 
@@ -69,7 +69,22 @@ bash sync_music.sh
 
 echo "--- Deleting SD files not in library ---"
 
-rsync -hvrltD --modify-window=2 --size-only --delete ~/Music/library/ /media/crclayton/MP3
+rsync -hvrltD --modify-window=2 --size-only --delete \
+  --exclude='new_soft/' \
+  --exclude='new_medium/' \
+  /home/crclayton/Music/library/ /media/crclayton/MP3
+
+echo "--- Syncing new_soft and new_medium in reverse-alphabetical order ---"
+
+for playlist in new_soft new_medium; do
+  src="/home/crclayton/Music/library/$playlist"
+  dst="/media/crclayton/MP3/$playlist"
+  rm -rf "$dst"
+  mkdir -p "$dst"
+  find "$src" -maxdepth 1 -type f | sort -r | while IFS= read -r file; do
+    cp "$file" "$dst/"
+  done
+done
 
 #cp ~/Music/USERPL1.PL /media/crclayton/MP3
 #cp ~/Music/USERPL2.PL /media/crclayton/MP3

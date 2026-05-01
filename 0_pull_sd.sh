@@ -3,7 +3,7 @@
 # bash ~/Music/no_dupes.sh
 # cd ~/Music
 
-rm ~/Music/USERPL*.PL
+#rm ~/Music/USERPL*.PL
 #cp library "/media/crclayton/Seagate Portable Drive/Music/library-$(date '+%y-%m-%d')" -r
 
 # save the playlists
@@ -18,3 +18,9 @@ cat USERPL*PL
 
 python3 save_playlists.py
 
+
+# temporarily while purging soft of cringe
+mv ~/Music/library/playlists/hard/* ~/Music/library/playlists/cringe
+
+# in the future
+# mv ~/Music/library/playlists/hard* ~/Music/library/playlists/cringe

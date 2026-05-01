@@ -23,20 +23,12 @@ python3 copy_xspf.py liked.xspf  library/liked/
 python3 copy_xspf.py mixternmixtus.xspf   library/playlists/mixter_n_mixtus/
 python3 copy_xspf.py hits.xspf            library/playlists/hits
 
-rm ~/Music/library/playlists/new_liked/* -rf
 rm ~/Music/library/new_liked/* -rf
-
-rm ~/Music/library/playlists/new_liked/* -rf
-rm ~/Music/library/playlists/new_soft/* -rf
-rm ~/Music/library/playlists/new_medium/* -rf
-rm ~/Music/library/playlists/new_hard/* -rf
-find ~/Music/library/playlists/soft/ ~/Music/library/playlists/medium/ ~/Music/library/playlists/hard/ -maxdepth 1 -type f -printf "%C@ %p\n" | sort -rn | head -n 30 | awk '{print $2}' | xargs -I {} cp "{}" ~/Music/library/new_liked/
-cd ~/Music/library/playlists/soft/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_soft/
-cd ~/Music/library/playlists/medium/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_medium/
-cd ~/Music/library/playlists/hard/
-ls * -t --time=ctime | head -n 30 | xargs -I {} cp "{}" ../new_hard/
+rm ~/Music/library/new_soft/* -rf
+rm ~/Music/library/new_medium/* -rf
+find ~/Music/library/playlists/soft/ ~/Music/library/playlists/medium/ -maxdepth 1 -type f -name "*.mp3" -printf "%f\t%p\n" | sort -r | head -n 100 | cut -f2 | xargs -I {} cp "{}" ~/Music/library/new_liked/
+find ~/Music/library/playlists/soft/ -maxdepth 1 -type f -name "*.mp3" -printf "%f\t%p\n" | sort -r | head -n 50 | cut -f2 | xargs -I {} cp "{}" ~/Music/library/new_soft/
+find ~/Music/library/playlists/medium/ -maxdepth 1 -type f -name "*.mp3" -printf "%f\t%p\n" | sort -r | head -n 50 | cut -f2 | xargs -I {} cp "{}" ~/Music/library/new_medium/
 cd ~/Music
 
 mv soft.xspf   soft.backup
@@ -81,7 +73,7 @@ echo ""
 echo "--- recently created albums: ---"
 echo ""
 
-python3 move_recently_added.py --count 12
+python3 move_recently_added.py --count 15
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5
 

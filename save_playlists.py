@@ -4,11 +4,7 @@ import shutil
 import difflib
 
 def normalize(name):
-    """
-    Lowercase, strip extension, and remove anything but letters+digits
-    so “04-Afterthought.mp3” → “afterthought”.
-    """
-    base = os.path.splitext(name)[0].lower()
+    base = re.sub(r'\.mp3$', '', name, flags=re.IGNORECASE).lower()
     return re.sub(r'[^0-9a-z]', '', base)
 
 def build_library_index(root_dir):
@@ -35,7 +31,7 @@ def build_library_index(root_dir):
 
 def find_best_match(norm_map, all_norms, query):
     """
-    Try to match ‘query’ (raw extracted) to a file in the library:
+    Try to match 'query' (raw extracted) to a file in the library:
       1) exact normalized match
       2) substring match
       3) difflib.get_close_matches
@@ -64,18 +60,30 @@ def find_best_match(norm_map, all_norms, query):
     return None
 
 def extract_mp3_filenames_iso88591(filepath):
-    """
-    (As before) read raw bytes, decode ISO-8859-1, strip nonprintable,
-    then find things ending in ‘.mp3’ via regex.
-    """
     try:
         with open(filepath, 'rb') as f:
-            data = f.read().decode('ISO-8859-1', errors='ignore')
+            raw = f.read()
     except FileNotFoundError:
         return []
-    # keep only ASCII-printable
+
+    # Try UTF-16-LE - some proprietary device formats embed a BOM mid-file
+    # after an ASCII header, so BOM position cannot be used for detection.
+    text = raw.decode('utf-16-le', errors='ignore')
+    utf16_pattern = re.compile(r'(?<![^\W_])\d{8}[\w\-]+', re.IGNORECASE)
+    utf16_matches = {m.group(0) for m in utf16_pattern.finditer(text)}
+
+    # Secondary pattern for truncated entries (no .mp3 suffix): matches ASCII
+    # track filenames like "12_All_Around_the_World_Re" that the binary-digit
+    # heuristic above misses when preceding bytes don't decode to digit chars.
+    track_pattern = re.compile(r'(?<![A-Za-z0-9])\d{2,}\.?_[A-Za-z][\w_\-]{4,}')
+    track_matches = {m.group(0) for m in track_pattern.finditer(text)}
+
+    all_matches = sorted(utf16_matches | track_matches)
+    if all_matches:
+        return all_matches
+
+    data = raw.decode('ISO-8859-1', errors='ignore')
     clean = ''.join(c for c in data if c.isprintable() and ord(c) < 128)
-    # ensure we separate filenames
     clean = re.sub(r'\.(?i:m)', '.', clean)
     pattern = re.compile(r'\d[\w\-\_]+\.', re.IGNORECASE)
     return sorted({m.group(0) for m in pattern.finditer(clean)})
@@ -115,10 +123,25 @@ if __name__ == "__main__":
         "/home/crclayton/Music/USERPL3.PL":
             "/home/crclayton/Music/library/playlists/hard",
     }
-    LIBRARY_DIR = "/home/crclayton/Music/library/genres"
+    LIBRARY_DIR = "/home/crclayton/Music/library"
 
     for pl_file, out_dir in playlists.items():
         print(f"\n=== Processing {os.path.basename(pl_file)} → {out_dir} ===")
         names = extract_mp3_filenames_iso88591(pl_file)
         copy_with_fuzzy(LIBRARY_DIR, out_dir, names, LIBRARY_DIR)
+
+    # USERPL3 (hard) = tracks to remove from soft and medium
+    hard_dir   = "/home/crclayton/Music/library/playlists/hard"
+    remove_from = [
+        "/home/crclayton/Music/library/playlists/soft",
+        "/home/crclayton/Music/library/playlists/medium",
+    ]
+    print("\n=== Removing hard tracks from soft/medium ===")
+    hard_files = {f for f in os.listdir(hard_dir) if f.lower().endswith('.mp3')}
+    for folder in remove_from:
+        for fname in hard_files:
+            target = os.path.join(folder, fname)
+            if os.path.exists(target):
+                os.remove(target)
+                print(f"✗ removed from {os.path.basename(folder)}: {fname}")
 
