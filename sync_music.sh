@@ -26,6 +26,12 @@ find "$SOURCE_DIR" -type f -iname "*.mp3" | sort | while read -r src_file; do
         continue
     fi
 
+    # Skip folders managed separately with custom ordering/shuffling
+    if [[ "$rel_path" == liked/* || "$rel_path" == new_liked/* || "$rel_path" == new_soft/* || \
+          "$rel_path" == new_medium/* || "$rel_path" == random_songs/* || "$rel_path" == random_new/* ]]; then
+        continue
+    fi
+
     # Only copy if it doesn't exist
     if [ ! -f "$dest_file" ]; then
         echo "📥 Copying: $rel_path"

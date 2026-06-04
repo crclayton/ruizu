@@ -70,19 +70,56 @@ bash sync_music.sh
 echo "--- Deleting SD files not in library ---"
 
 rsync -hvrltD --modify-window=2 --size-only --delete \
+  --exclude='liked/' \
+  --exclude='new_liked/' \
   --exclude='new_soft/' \
   --exclude='new_medium/' \
+  --exclude='random_new/' \
+  --exclude='random_songs/' \
   /home/crclayton/Music/library/ /media/crclayton/MP3
 
-echo "--- Syncing new_soft and new_medium in reverse-alphabetical order ---"
+echo "--- Syncing time-updated playlists in reverse-alphebatical (ie. newer date first) order ---"
 
-for playlist in new_soft new_medium; do
+for playlist in new_soft new_medium new_liked; do
   src="/home/crclayton/Music/library/$playlist"
   dst="/media/crclayton/MP3/$playlist"
   rm -rf "$dst"
+  echo $playlist
   mkdir -p "$dst"
   find "$src" -maxdepth 1 -type f | sort -r | while IFS= read -r file; do
     cp "$file" "$dst/"
+    echo "> $file"
+  done
+done
+
+# this means that every time we recreate the entire playlist, otherwise
+# there will be repeats that rysnc won't re-upload which keep it from being purely alphabetical
+echo "--- Syncing re-updated playlists in alphabetical order ---"
+
+for playlist in random_new; do
+  src="/home/crclayton/Music/library/$playlist"
+  dst="/media/crclayton/MP3/$playlist"
+  rm -rf "$dst"
+  echo $playlist
+  mkdir -p "$dst"
+  find "$src" -maxdepth 1 -type f | sort | while IFS= read -r file; do
+    cp "$file" "$dst/"
+    echo "> $file"
+  done
+done
+
+
+echo "--- Syncing random_songs and liked songs in shuffled order ---"
+
+for playlist in random_songs liked; do
+  src="/home/crclayton/Music/library/$playlist"
+  dst="/media/crclayton/MP3/$playlist"
+  rm -rf "$dst"
+  echo $playlist
+  mkdir -p "$dst"
+  find "$src" -maxdepth 1 -type f | shuf | while IFS= read -r file; do
+    cp "$file" "$dst/"
+    echo "> $file"
   done
 done
 

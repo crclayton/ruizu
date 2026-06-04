@@ -31,7 +31,7 @@ def generate_xspf(dir_path, output_path):
     title.text = Path(dir_path).name
     tracklist = ET.SubElement(root, 'trackList')
 
-    for fname in sorted(os.listdir(dir_path)):
+    for fname in sorted(os.listdir(dir_path), reverse=True):
         if os.path.splitext(fname)[1].lower() in AUDIO_EXTENSIONS:
             track = ET.SubElement(tracklist, 'track')
             # file:// URI

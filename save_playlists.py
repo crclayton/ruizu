@@ -75,7 +75,7 @@ def extract_mp3_filenames_iso88591(filepath):
     # Secondary pattern for truncated entries (no .mp3 suffix): matches ASCII
     # track filenames like "12_All_Around_the_World_Re" that the binary-digit
     # heuristic above misses when preceding bytes don't decode to digit chars.
-    track_pattern = re.compile(r'(?<![A-Za-z0-9])\d{2,}\.?_[A-Za-z][\w_\-]{4,}')
+    track_pattern = re.compile(r'(?<![A-Za-z0-9])\d{2,}[._-][A-Za-z_][\w_\-]{4,}')
     track_matches = {m.group(0) for m in track_pattern.finditer(text)}
 
     all_matches = sorted(utf16_matches | track_matches)
@@ -131,17 +131,21 @@ if __name__ == "__main__":
         copy_with_fuzzy(LIBRARY_DIR, out_dir, names, LIBRARY_DIR)
 
     # USERPL3 (hard) = tracks to remove from soft and medium
-    hard_dir   = "/home/crclayton/Music/library/playlists/hard"
+    hard_dir = "/home/crclayton/Music/library/playlists/hard"
     remove_from = [
         "/home/crclayton/Music/library/playlists/soft",
         "/home/crclayton/Music/library/playlists/medium",
+        "/home/crclayton/Music/library/liked",
     ]
     print("\n=== Removing hard tracks from soft/medium ===")
     hard_files = {f for f in os.listdir(hard_dir) if f.lower().endswith('.mp3')}
+    hard_norms = {normalize(f) for f in hard_files}
     for folder in remove_from:
-        for fname in hard_files:
-            target = os.path.join(folder, fname)
-            if os.path.exists(target):
+        for fname in os.listdir(folder):
+            if not fname.lower().endswith('.mp3'):
+                continue
+            if fname in hard_files or normalize(fname) in hard_norms:
+                target = os.path.join(folder, fname)
                 os.remove(target)
                 print(f"✗ removed from {os.path.basename(folder)}: {fname}")
 

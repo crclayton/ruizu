@@ -9,7 +9,18 @@
 #find /home/crclayton/Music/bandcamp -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
 #find /home/crclayton/Music/ytmdl -mindepth 1 -maxdepth 1 -type d -exec mv  {} ~/Music/library/recently_added \;
 
+echo ""
+echo "--- Running detox ---"
+echo ""
 
+# encode correct
+detox ~/Music/library/ -r -v
+
+echo ""
+echo "--- Removing non audio files ---"
+echo ""
+
+find ~/Music/library -not -iname "*.mp3" -a -not -iname "*.flac" -a -not -iname "*.ogg" -a -not -iname "*.m4a" -type f -delete
 
 echo ""
 echo "--- Copying strawberry playlists to folders ---"
@@ -22,6 +33,9 @@ python3 copy_xspf.py hard.xspf   library/playlists/hard/
 python3 copy_xspf.py liked.xspf  library/liked/
 python3 copy_xspf.py mixternmixtus.xspf   library/playlists/mixter_n_mixtus/
 python3 copy_xspf.py hits.xspf            library/playlists/hits
+
+# timestamp-prefix new songs before sorting so they land in new_soft/new_medium
+bash ~/Music/clean_names.sh ~/Music/library/playlists/soft ~/Music/library/playlists/medium
 
 rm ~/Music/library/new_liked/* -rf
 rm ~/Music/library/new_soft/* -rf
@@ -73,7 +87,7 @@ echo ""
 echo "--- recently created albums: ---"
 echo ""
 
-python3 move_recently_added.py --count 15
+python3 move_recently_added.py --count 10
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5
 
@@ -81,11 +95,11 @@ python3 move_recently_added.py --count 15
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5 -exec cp -r {} ~/Music/library/recently_added \;
 
-echo "--- 2025 albums: ---"
+#echo "--- 2025 albums: ---"
 
 #find library/ -type d -name "2025-*"
 
-echo "--- Copying into folder ---"
+#echo "--- Copying into folder ---"
 
 #find library/ -type d -name "2025-*" -exec cp -r {} ~/Music/library/recently_added \;
 
@@ -107,15 +121,24 @@ python3 move_random.py --count 5
 # random songs
 bash update_random.sh
 
-echo ""
-echo "--- Running detox ---"
-echo ""
 
-# encode correct
-detox ~/Music/library/ -r -v
 
 # remove track numbers from playlists
 bash ~/Music/clean_names.sh ~/Music/library/playlists/soft ~/Music/library/playlists/medium ~/Music/library/playlists/hard ~/Music/library/liked ~/Music/library/new_liked ~/Music/library/playlists/hits
+
+cp ~/Music/library/random_new/*mp3 ~/Music/library/combo
+cp ~/Music/library/random_albums/*mp3 ~/Music/library/combo
+
+# with these ones keep the latest (can bump tracks I like)
+fdupes ~/Music/library/playlists/medium/ --order='name' --delete --reverse --noprompt
+fdupes ~/Music/library/playlists/soft/   --order='name' --delete --reverse --noprompt
+fdupes ~/Music/library/playlists/cringe/ --order='name' --delete --reverse --noprompt
+fdupes ~/Music/library/liked/            --order='name' --delete --reverse --noprompt
+
+# with these ones keep the oldest (phresh content)
+fdupes ~/Music/library/new_medium/ --order='name' --delete --noprompt
+fdupes ~/Music/library/new_soft/   --order='name' --delete --noprompt
+fdupes ~/Music/library/new_liked/  --order='name' --delete --noprompt
 
 
 echo ""

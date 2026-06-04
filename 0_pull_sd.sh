@@ -3,7 +3,7 @@
 # bash ~/Music/no_dupes.sh
 # cd ~/Music
 
-#rm ~/Music/USERPL*.PL
+rm ~/Music/USERPL*.PL
 #cp library "/media/crclayton/Seagate Portable Drive/Music/library-$(date '+%y-%m-%d')" -r
 
 # save the playlists
