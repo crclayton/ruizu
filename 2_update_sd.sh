@@ -1,131 +1,83 @@
+#!/bin/bash
 
-#cp library "/media/crclayton/Seagate Portable Drive/Music/library-$(date '+%y-%m-%d')" -r
+# ── Config ────────────────────────────────────────────────────────────────────
+SOURCE_DIR=/home/crclayton/Music/library
+TARGET_DIR=/media/crclayton/MP3
 
-# save the playlists
-#
-#echo "--- Copying Saved MP3 Playlist Files to Folders ---"
-#
-#cp /media/crclayton/MP3/USERPL1.PL .
-#cp /media/crclayton/MP3/USERPL2.PL .
-#cp /media/crclayton/MP3/USERPL3.PL .
-#python3 save_playlists.py
+DIRS_REVERSE_ALPHA=(new_soft new_medium new_liked)   # copied newest-first (date-prefixed filenames)
+DIRS_ALPHA=(random_new)                               # copied a→z
+DIRS_SHUFFLED=(random_songs)                   # copied in random order # liked
+DIRS_CLEAR=(recently_added random_albums)            # cleared only, not rebuilt
 
-echo "--- Recreating the playlist files ---"
+DIRS_SPECIAL=("${DIRS_REVERSE_ALPHA[@]}" "${DIRS_ALPHA[@]}" "${DIRS_SHUFFLED[@]}")
+# ──────────────────────────────────────────────────────────────────────────────
 
-# creating a new xspf from what's in the folder
-python3 sync_xspf.py library/playlists/soft/   -o soft.xspf
-python3 sync_xspf.py library/playlists/medium/ -o medium.xspf
-python3 sync_xspf.py library/playlists/hard/   -o hard.xspf
-python3 sync_xspf.py library/playlists/mixter_n_mixtus/   -o mixternmixtus.xspf
-python3 sync_xspf.py library/playlists/hits/   -o hits.xspf
+# Step 1 – Rebuild xspf playlists (parallel)
+echo "--- Recreating playlist files ---"
+python3 sync_xspf.py library/playlists/soft/            -o soft.xspf &
+python3 sync_xspf.py library/playlists/medium/          -o medium.xspf &
+python3 sync_xspf.py library/playlists/hard/            -o hard.xspf &
+python3 sync_xspf.py library/playlists/mixter_n_mixtus/ -o mixternmixtus.xspf &
+python3 sync_xspf.py library/playlists/hits/            -o hits.xspf &
+wait
 
+# Step 2 – Build liked folder, then its xspf
+echo "--- Creating liked folder ---"
+cp --update=none "$SOURCE_DIR/playlists/medium/"* "$SOURCE_DIR/liked"
+cp --update=none "$SOURCE_DIR/playlists/soft/"*   "$SOURCE_DIR/liked"
+python3 sync_xspf.py library/liked/ -o liked.xspf
 
-echo "--- Creating Liked Folder from playlists ---"
+# Step 3 – Clear SD dirs (DIRS_CLEAR = contents only; DIRS_SPECIAL = whole dir, rebuilt below)
+echo "--- Clearing SD targets ---"
+for dir in "${DIRS_CLEAR[@]}";   do rm -f "${TARGET_DIR}/$dir"/*; done
+for dir in "${DIRS_SPECIAL[@]}"; do rm -rf "${TARGET_DIR:?}/$dir"; done
 
-#cp --update=none ~/Music/library/playlists/hard/*   ~/Music/library/liked
-cp --update=none /home/crclayton/Music/library/playlists/medium/* /home/crclayton/Music/library/liked
-cp --update=none /home/crclayton/Music/library/playlists/soft/*   /home/crclayton/Music/library/liked
+# Step 4 – Copy new MP3s to SD, skipping special dirs and genres
+echo "--- Uploading new library files to SD ---"
+skip_regex="^($(IFS='|'; echo "${DIRS_SPECIAL[*]}"))/"
 
-echo "--- Recreating the playlist files ---"
+find "$SOURCE_DIR" -type f -iname "*.mp3" | sort | while IFS= read -r src_file; do
+    rel_path="${src_file#$SOURCE_DIR/}"
+    [[ "$rel_path" == *genres/*  ]]  && continue
+    [[ "$rel_path" =~ $skip_regex ]] && continue
+    dest_file="$TARGET_DIR/$rel_path"
+    if [[ ! -f "$dest_file" ]]; then
+        echo "📥 $rel_path"
+        mkdir -p "$(dirname "$dest_file")"
+        cp "$src_file" "$dest_file"
+    fi
+done
 
-python3 sync_xspf.py library/liked/  -o liked.xspf
-
-# update to SD card
-#rm /media/crclayton/7C3F-6B90/* -rf
-
-#fatsort -cn /media/crclayton/MP3
-
-#echo "--- Adding shuffled playlist files ---"
-#
-#rm /media/crclayton/MP3/playlists/liked/*
-#rm /media/crclayton/MP3/playlists/soft/*
-#rm /media/crclayton/MP3/playlists/medium/*
-#rm /media/crclayton/MP3/playlists/hard/*
-#
-#mkdir -p /media/crclayton/MP3/playlists/liked/
-#find ~/Music/library/playlists/liked/ -type f | shuf | while read file; do
-#  cp "$file" /media/crclayton/MP3/playlists/liked/
-#  echo "liked $file"
-#done
-#
-#mkdir -p /media/crclayton/MP3/playlists/soft/
-#find ~/Music/library/playlists/soft/ -type f | shuf | while read file; do
-#  cp "$file" /media/crclayton/MP3/playlists/soft/
-#done
-#
-#mkdir -p /media/crclayton/MP3/playlists/medium/
-#find ~/Music/library/playlists/medium/ -type f | shuf | while read file; do
-#  cp "$file" /media/crclayton/MP3/playlists/medium/
-#done
-#
-#mkdir -p /media/crclayton/MP3/playlists/hard/
-#find ~/Music/library/playlists/hard/ -type f | shuf | while read file; do
-#  cp "$file" /media/crclayton/MP3/playlists/hard/
-#done
-
-echo "--- Uploading library files to SD ---"
-
-bash sync_music.sh
-
+# Step 5 – Delete SD files that no longer exist in library
 echo "--- Deleting SD files not in library ---"
-
+exclude_args=()
+for dir in "${DIRS_SPECIAL[@]}"; do exclude_args+=(--exclude="$dir/"); done
 rsync -hvrltD --modify-window=2 --size-only --delete \
-  --exclude='liked/' \
-  --exclude='new_liked/' \
-  --exclude='new_soft/' \
-  --exclude='new_medium/' \
-  --exclude='random_new/' \
-  --exclude='random_songs/' \
-  /home/crclayton/Music/library/ /media/crclayton/MP3
+    "${exclude_args[@]}" \
+    "$SOURCE_DIR/" "$TARGET_DIR"
 
-echo "--- Syncing time-updated playlists in reverse-alphebatical (ie. newer date first) order ---"
+# Step 6 – Rebuild specially-ordered dirs in parallel
+echo "--- Syncing specially-ordered playlists ---"
 
-for playlist in new_soft new_medium new_liked; do
-  src="/home/crclayton/Music/library/$playlist"
-  dst="/media/crclayton/MP3/$playlist"
-  rm -rf "$dst"
-  echo $playlist
-  mkdir -p "$dst"
-  find "$src" -maxdepth 1 -type f | sort -r | while IFS= read -r file; do
-    cp "$file" "$dst/"
-    echo "> $file"
-  done
-done
+_copy_dir() {
+    local dir=$1 order=$2
+    local src="$SOURCE_DIR/$dir" dst="$TARGET_DIR/$dir"
+    mkdir -p "$dst"
+    case "$order" in
+        reverse) find "$src" -maxdepth 1 -type f | sort -r ;;
+        alpha)   find "$src" -maxdepth 1 -type f | sort    ;;
+        shuffle) find "$src" -maxdepth 1 -type f | shuf    ;;
+    esac | while IFS= read -r f; do cp "$f" "$dst/"; done
+    echo "  ✓ $dir"
+}
 
-# this means that every time we recreate the entire playlist, otherwise
-# there will be repeats that rysnc won't re-upload which keep it from being purely alphabetical
-echo "--- Syncing re-updated playlists in alphabetical order ---"
+echo "reverse-alphabetical (newest songs listed first)"
+for dir in "${DIRS_REVERSE_ALPHA[@]}"; do echo "> $dir"; _copy_dir "$dir" reverse; done
 
-for playlist in random_new; do
-  src="/home/crclayton/Music/library/$playlist"
-  dst="/media/crclayton/MP3/$playlist"
-  rm -rf "$dst"
-  echo $playlist
-  mkdir -p "$dst"
-  find "$src" -maxdepth 1 -type f | sort | while IFS= read -r file; do
-    cp "$file" "$dst/"
-    echo "> $file"
-  done
-done
+echo "alphabetical (track-chronological)"
+for dir in "${DIRS_ALPHA[@]}";         do echo "> $dir"; _copy_dir "$dir" alpha;   done
 
+echo "shuffled"
+for dir in "${DIRS_SHUFFLED[@]}";      do echo "> $dir"; _copy_dir "$dir" shuffle; done
 
-echo "--- Syncing random_songs and liked songs in shuffled order ---"
-
-for playlist in random_songs liked; do
-  src="/home/crclayton/Music/library/$playlist"
-  dst="/media/crclayton/MP3/$playlist"
-  rm -rf "$dst"
-  echo $playlist
-  mkdir -p "$dst"
-  find "$src" -maxdepth 1 -type f | shuf | while IFS= read -r file; do
-    cp "$file" "$dst/"
-    echo "> $file"
-  done
-done
-
-#cp ~/Music/USERPL1.PL /media/crclayton/MP3
-#cp ~/Music/USERPL2.PL /media/crclayton/MP3
-#cp ~/Music/USERPL3.PL /media/crclayton/MP3
-
-#udisks --unmount  /media/crclayton/7C3F-6B90
-#udisks --detatch  /media/crclayton/7C3F-6B90
+echo "--- Done ---"

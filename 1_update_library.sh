@@ -87,7 +87,7 @@ echo ""
 echo "--- recently created albums: ---"
 echo ""
 
-python3 move_recently_added.py --count 10
+python3 move_recently_added.py --count 7
 
 #find library/ -type d -name "[0-9][0-9][0-9][0-9]-*" -ctime -5
 
@@ -116,7 +116,7 @@ echo ""
 # create new shuffle playlist
 
 # random albums
-python3 move_random.py --count 5
+python3 move_random.py --count 7
 
 # random songs
 bash update_random.sh
